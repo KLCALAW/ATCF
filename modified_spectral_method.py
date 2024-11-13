@@ -1,8 +1,6 @@
 import pandas as pd
 import numpy as np
 
-
-
 def create_correlation_matrix(file_path):
 
     # Load the standardized returns data
@@ -146,9 +144,11 @@ def recursive_spectral_method(C_g, company_names,min_size=2, modularity_threshol
 
 if __name__ == "__main__":
 
-    correlation_matrix,T,N,company_names = create_correlation_matrix('returns_standardized.csv')  
+    correlation_matrix,T,N,company_names = create_correlation_matrix('eur_data_standardized_returns.csv')  
     C_g = calculate_C_g(correlation_matrix,T,N)
     result_communities, company_communities, modularities = recursive_spectral_method(C_g, company_names,min_size=2, modularity_threshold=0.00001)
 
     print(modularities)
+    print(company_communities)
+    print(result_communities)
     
