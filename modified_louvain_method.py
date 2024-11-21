@@ -1,190 +1,168 @@
+
+
 import numpy as np
-import pandas as pd
+from modified_spectral_method import *
+import copy
+import random
 
 
-def create_correlation_matrix(file_path):
+#TODO: Adjust change in modularity formula --- DONE ---
+#TODO: Fix issue with map --- DONE ---
+#TODO: Adjust logic for empty communities --- DONE ---
+#TODO: Optimize algorithm
+#TODO: Hypernodes 
+#TODO: Check if we need to add i<=j in the modularity calculation 
 
-    # Load the standardized returns data
-    df_standardized_returns = pd.read_csv(file_path)
+
+
+def calculate_modularity_with_potential_move(node,current_index,neighbour_community_index,communities, modularity_matrix):
     
-    # Set the 'Date' column as the index if it's not already
-    if 'Date' in df_standardized_returns.columns:
-        df_standardized_returns.set_index('Date', inplace=True)
+    "Calculate the modularity of a potential move of a node from its current community to a neighbour community"
 
-    # Calculate lambda boundaries using RMT
-    T = len(df_standardized_returns)
-    N = len(df_standardized_returns.columns)
+    # Get the current and neighbor communities
+    current_community = communities[current_index]
+    neighbour_community = communities[neighbour_community_index]
 
-    #Extract the company names
-    company_names = df_standardized_returns.columns.to_list()
+    #CALCULATE MODULARITY GAIN FROM ADDING NODE TO NEW COMMUNITY
+    #---------------------------------------------------
+
+    # Calculate old modularity of the neighbor community
+    # old_modularity_new_community = sum(
+    #     modularity_matrix[i][j] 
+    #     for i in neighbour_community
+    #     for j in neighbour_community
+    #     if i <= j
+    # )
+
+    # Calculate new modularity after adding the node to the neighbor community
+    temp_neighbour_community = neighbour_community + [node] #We create a temp variable to avoid modifying the original community
+    new_modularity_new_community = sum(  #The new modularity can be computed by adding the modularity without the node to the additional gain after adding the node
+        modularity_matrix[node][j] #We only check pairwise correlations with the node we just added to the community
+        #for i in temp_neighbour_community
+        for j in temp_neighbour_community
+        #if i <= j
+    )
+
+    #change_from_addition = new_modularity_new_community - old_modularity_new_community
+    change_from_addition  = new_modularity_new_community
+
+    #CALCULATE MODULARITY LOSS FROM REMOVING NODE FROM CURRENT COMMUNITY
+    #---------------------------------------------------
+
+    old_modularity_current_community = sum(
+        modularity_matrix[i][j]
+        for i in current_community
+        for j in current_community
+        if i <= j
+    )
+
+    temp_current_community = copy.deepcopy(current_community) #We create a temp variable to avoid modifying the original community
+    temp_current_community.remove([node]) #Remove node from old community
+
+    new_modularity_current_communtity = sum(
+        modularity_matrix[i][j]
+        for i in temp_current_community
+        for j in temp_current_community
+        if i <= j
+    )
+
+
+    change_from_removal = old_modularity_current_community - new_modularity_current_communtity
+
+
+
+    # Normalize the modularity change
+    c_norm = np.sum(modularity_matrix)
+
+    modularity_change = (change_from_addition - change_from_removal) / c_norm
+
+    return modularity_change
+
+
+def phase_1(communities, modularity_matrix):
+
+    "Randomly select a node, evaluate modularity changes, and move it to maximize modularity"
     
-    # Calculate the correlation matrix on the returns data
-    correlation_matrix = df_standardized_returns.corr()
-
-
-
-    return correlation_matrix, T, N, company_names
-
-def calculate_C_g(correlation_matrix,T,N):
-    # Calculate the eigenvalues and eigenvectors of the correlation matrix
-    eigenvalues, eigenvectors = np.linalg.eig(correlation_matrix)
+    nodes = [node for community in communities for node in community]  # Flatten all nodes into a single list
+    community_map = {node: index for index, community in enumerate(communities) for node in community}  # Map nodes to their communities
     
-    lambda_plus = (1 + np.sqrt(N / T))**2
-    lambda_min = (1 - np.sqrt(N / T))**2  # Not used in this code but calculated as per RMT
-    
-    # Obtaining eigenvalues and eigenvectors above lambda_plus
-    denoised_eigenvalues = []
-    denoised_eigenvectors = []
-    
-    for index, eigenvalue in enumerate(eigenvalues):
-        if eigenvalue > lambda_plus:
-            denoised_eigenvalues.append(eigenvalue)
-            denoised_eigenvectors.append(eigenvectors[:, index])  # Corresponding eigenvector
-    
-    # Remove the largest eigenvalue (global mode) from denoised values
-    if denoised_eigenvalues:
-        max_value = max(denoised_eigenvalues)
-        max_index = denoised_eigenvalues.index(max_value)
-        denoised_eigenvalues.pop(max_index)
-        denoised_eigenvectors.pop(max_index)
-    
-    # Reconstruct the filtered correlation matrix C^(g)
-    C_g = np.zeros_like(correlation_matrix)
-    for i, eigenvalue in enumerate(denoised_eigenvalues):
-        eigenvector = np.array(denoised_eigenvectors[i]).reshape(-1, 1)  # Column vector
-        C_g += eigenvalue * (eigenvector @ eigenvector.T)  # Outer product
-    
-    # Return the filtered correlation matrix
-    return C_g
+    moved = True
+    iteration = 0
 
+    while moved == True:  # Continue until no moves improve modularities
 
-
-def calculate_modularity(C_g, communities):
-    """
-    Calculate modularity for a given community structure.
-    C_g: The matrix accounting for the difference between C and the null model (C_g = C - (C^r + C^m))
-    communities: List of lists, where each inner list represents a community (list of node indices)
-    """
-    # Calculate C_norm (Normalization factor: sum of all elements in C_g)
-    C_norm = np.sum(C_g)
-    
-    modularity = 0.0
-    for community in communities:
-        for i in community:
-            for j in community:
-                modularity += C_g[i, j]  # Add the covariance between nodes i and j within the same community
-    modularity /= C_norm  # Normalize by the total sum of correlations
-    return modularity
-
-
-def louvain_method(C_g, min_size=2, modularity_threshold=0.00001):
-    """
-    Perform Louvain Method for community detection adapted for correlation matrices.
-    C_g: Matrix accounting for the difference between C and the null model (C_g = C - (C^r + C^m))
-    min_size: Minimum size of community to stop splitting further
-    modularity_threshold: Threshold for modularity improvement to decide whether to continue
-    """
-    # Step 1: Initialize each node as its own community
-    communities = [[i] for i in range(C_g.shape[0])]
-    
-    # Step 2: Community detection loop
-    modularity = 0
-    while True:
-        # Step 2a: Calculate modularity for the current community structure
-        modularity_new = calculate_modularity(C_g, communities)
+        print(f"ITERATION {iteration}")
+        print("-----------------")
         
-        # Step 2b: Move nodes to the best neighboring community
-        for community in communities:
-            # Evaluate potential movement of each node in the community
-            for node in community:
-                best_modularity_gain = 0
-                best_community = community
+        iteration += 1
+
+        moved = False
+        random.shuffle(nodes)  # Randomly shuffle the nodes
+        
+        for node in nodes:
+
+            #print("COMMUNITY MAP BELOW:")
+            #print(community_map)
+
+            current_index = community_map[node]  # Find the node's current community index
+            #print("Current index",current_index)
+            current_community = communities[current_index]
+            
+            #print("Node:", node)
+            #print("Current Node Communty:", current_community)
+            
+            max_modularity = 0
+            best_community = None
+            
+            for j, neighbor_community in enumerate(communities):
+
+                if not neighbor_community or neighbor_community == current_community:
+                    continue  # Skip empty or identical communities
                 
-                # Try moving the node to each of the neighboring communities
-                for neighbor_community in communities:
-                    if node not in neighbor_community:
-                        new_communities = [c if c != community else community + [node] for c in communities]
-                        modularity_gain = calculate_modularity(C_g, new_communities) - modularity_new
+                modularity_change = calculate_modularity_with_potential_move(node, current_index, j, communities, modularity_matrix)
+                
+                if modularity_change > max_modularity:
+                    max_modularity = modularity_change
+                    best_community = neighbor_community
+            
+            # If a modularity improvement is found, move the node
+            if max_modularity > 0 and best_community is not None:
+                current_community.remove(node)
+                best_community.append(node)
+                community_map[node] = communities.index(best_community)  # Update the community map
+                moved = True  # Indicate that a move occurred
+                #print("MOVED NODE", node, "TO COMMUNITY", communities.index(best_community))
 
-                        if modularity_gain > best_modularity_gain:
-                            best_modularity_gain = modularity_gain
-                            best_community = neighbor_community
+                #print("UPDATED COMMUNITY MAP:")
+                #print(community_map)
 
-                # Move the node to the best community if there's a gain
-                if best_community != community:
-                    community.remove(node)
-                    best_community.append(node)
+        # Remove empty communities
+        communities = [community for community in communities if community]
 
-        print("Old:", modularity)
-        print("New:", modularity_new)
-        # Step 2c: Check if modularity improvement is below threshold
-        modularity_new = calculate_modularity(C_g, communities)
-        if abs(modularity_new - modularity) < modularity_threshold:
-            break #Terminates while loop
-        modularity = modularity_new
-
-    # Step 3: Return the final community structure
+        #Update community map with new communities
+        community_map = {node: index for index, community in enumerate(communities) for node in community}  # Map nodes to their communities
+        
+        print(f"End of iteration {iteration}, Communities: {communities},")
+    
     return communities
 
 
-def aggregate_communities(C_g, communities):
-    """
-    Aggregate communities into supernodes (hypernodes) by summing their correlations.
-    C_g: Matrix accounting for the difference between C and the null model (C_g = C - (C^r + C^m))
-    communities: List of communities (each is a list of nodes)
-    """
+def modified_louvain(modularity_matrix):
 
-    #If there are n original communities and after aggregation, we have k supernodes, new_C_g will be a k×kk×k matrix.
-    new_C_g = np.zeros((len(communities), len(communities)))
+    #Get node indices from matrix
+    node_indices = np.arange(modularity_matrix.shape[0])
 
-    #For each community in communities, calculate the sum of the correlation between each node in a pair of communities to get the super node correlations
-    #Example, for community A and B, it will sum up the pairwise correlations of every node in A with every node in B to get the correlation between super node A and super node B
-    for i, community_i in enumerate(communities):
-        for j, community_j in enumerate(communities):
-            if i != j:
-                new_C_g[i, j] = np.sum(C_g[community_i, :][:, community_j])
-            else:
-                new_C_g[i, i] = np.sum(C_g[community_i, :][:, community_i])  # Self-loop (variance)
-    return new_C_g
-
-def recursive_louvain(C_g, modularity_threshold=0.00001):
-    """
-    Recursively apply Louvain method to find communities, then aggregate and repeat.
-    C_g: Matrix accounting for the difference between C and the null model (C_g = C - (C^r + C^m))
-    modularity_threshold: Threshold for modularity improvement to decide whether to continue
-    """
-    communities = louvain_method(C_g)  # Apply Louvain method to the current level
-
-    # Calculate the initial modularity
-    modularity_old = calculate_modularity(C_g, communities)
-    
-    # Apply Louvain method recursively to create a coarser network
-    aggregated_C_g = aggregate_communities(C_g, communities)
-    
-    # Calculate the modularity after aggregation
-    modularity_new = calculate_modularity(aggregated_C_g, communities)
-    
-    #print(modularity_new)
-
-    # If modularity improvement is below the threshold, stop recursion
-    if abs(modularity_new - modularity_old) < modularity_threshold:
-        return communities  # Return the current community structure
-    
-    # Continue recursion on the aggregated network
-    return recursive_louvain(aggregated_C_g, modularity_threshold)
+    #Create initial communities
+    communities = [[node] for node in node_indices]
 
 
-if __name__ == "__main__":
+    # print("Modularity matrix")
+    # print(modularity_matrix)
 
-    correlation_matrix,T,N,company_names = create_correlation_matrix('returns_standardized.csv')  
-    C_g = calculate_C_g(correlation_matrix,T,N)
+    #Calculate initial modularity
+    new_communities = phase_1(communities, modularity_matrix)
 
-    # Extracting a submatrix (rows 1 to 2, columns 2 to 3)
-    sub_matrix = C_g[0:5, 0:5]
-    # Run the Louvain method on the matrix C_g
-    final_communities = recursive_louvain(C_g)  
-    print(final_communities)
+    return new_communities
+        
 
 
-
-# The final_communities will contain the hierarchical community structure at various levels
