@@ -75,4 +75,4 @@ if __name__ == '__main__':
     C_g = calculate_C_g(correlation_matrix, T, N)
     result_communities, company_communities, modularities = recursive_spectral_method(C_g, company_names, min_size=2, modularity_threshold=0.00001)
 
-    plot_group_distribution(company_communities, df, criteria='Region')
+    plot_group_distribution(company_communities, df, criteria='Sector')
