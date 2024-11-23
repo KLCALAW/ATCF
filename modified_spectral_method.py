@@ -84,7 +84,8 @@ def calculate_modularity(C_g, partitions):
     for community in partitions:
         for i in community:
             for j in community:
-                modularity += C_g[i, j]
+                if i <= j:
+                    modularity += C_g[i, j]
     
     # Normalize modularity by C_norm
     modularity /= C_norm
