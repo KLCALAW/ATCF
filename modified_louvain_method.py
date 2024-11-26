@@ -14,7 +14,7 @@ import random
 
 
 
-def calculate_modularity_with_potential_move(node,current_index,neighbour_community_index,communities, modularity_matrix):
+def calculate_modularity_with_potential_move(node,current_index,neighbour_community_index,communities, modularity_matrix, original_corr_matrix):
     
     "Calculate the modularity of a potential move of a node from its current community to a neighbour community"
 
@@ -71,14 +71,15 @@ def calculate_modularity_with_potential_move(node,current_index,neighbour_commun
 
 
     # Normalize the modularity change
-    c_norm = np.sum(modularity_matrix)
+    c_norm = np.sum(np.triu(original_corr_matrix))
+
 
     modularity_change = (change_from_addition - change_from_removal) / c_norm
 
     return modularity_change
 
 
-def phase_1(communities, modularity_matrix):
+def phase_1(communities, modularity_matrix, original_corr_matrix):
 
     "Randomly select a node, evaluate modularity changes, and move it to maximize modularity"
     
@@ -118,7 +119,7 @@ def phase_1(communities, modularity_matrix):
                 if not neighbor_community or neighbor_community == current_community:
                     continue  # Skip empty or identical communities
                 
-                modularity_change = calculate_modularity_with_potential_move(node, current_index, j, communities, modularity_matrix)
+                modularity_change = calculate_modularity_with_potential_move(node, current_index, j, communities, modularity_matrix, original_corr_matrix)
                 
                 if modularity_change > max_modularity:
                     max_modularity = modularity_change
@@ -213,7 +214,7 @@ def map_hypernodes_to_nodes(hypernode_communities, node_communities):
     return final_communities
 
 
-def modified_louvain(modularity_matrix):
+def modified_louvain(modularity_matrix,original_corr_matrix):
 
     #Get node indices from matrix
     node_indices = np.arange(modularity_matrix.shape[0])
@@ -225,7 +226,7 @@ def modified_louvain(modularity_matrix):
     #--------------------------------
 
     #Calculate initial communities
-    phase1_communities = phase_1(initial_pahse1_communities, modularity_matrix)
+    phase1_communities = phase_1(initial_pahse1_communities, modularity_matrix, original_corr_matrix)
 
     #Phase 2 (aggregation) for hypernodes
     #--------------------------------
@@ -241,7 +242,7 @@ def modified_louvain(modularity_matrix):
     #Phase 1 for hypernodes
     #--------------------------------
 
-    phase1_hypernode_communities = phase_1(initial_hypernode_communities, renormalized_modularity_matrix)
+    phase1_hypernode_communities = phase_1(initial_hypernode_communities, renormalized_modularity_matrix,original_corr_matrix)
 
     #Map back hypernode communities to node communities
     #--------------------------------
@@ -255,12 +256,16 @@ def modified_louvain(modularity_matrix):
     return final_communities
 
 
-def calculate_global_modularity(communities, modularity_matrix):
+def calculate_global_modularity(communities, modularity_matrix, original_corr_matrix):
 
     #Calculate the global modularity of the communities
 
     modularity = 0
-    c_norm = np.sum(modularity_matrix)
+    #c_norm = np.sum(modularity_matrix)
+    c_norm = np.sum(np.triu(original_corr_matrix))
+
+                
+    modularity = 0.0
 
     for community in communities:
         for i in community:
@@ -283,5 +288,16 @@ def map_communities_to_company_names(communities, company_names):
         company_communities.append(company_list)
 
     return company_communities    
+
+if __name__ == "__main__":
+
+    correlation_matrix,T,N,company_names = create_correlation_matrix('returns_standardized.csv')  
+    C_g = calculate_C_g(correlation_matrix,T,N) #Modularity matrix
+    print(correlation_matrix.shape)
+    correlation_matrix_np = np.array(correlation_matrix)
+    louvain_communities = modified_louvain(C_g,correlation_matrix_np)
+
+    print("Global modularity of modified Louvain method: ", calculate_global_modularity(louvain_communities, C_g, correlation_matrix_np))
+
 
     

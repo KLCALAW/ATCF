@@ -101,13 +101,8 @@ def spectral_method(C_g):
 
 def calculate_modularity(C_g, partitions, corr_matrix):
     # C_norm is the total sum of C_g (Eq.38)
-    C_norm = 0
-    rows, cols = corr_matrix.shape
-    
-    for i in range(rows):
-        for j in range(cols):
-            if i <= j:
-                C_norm += corr_matrix[i, j]
+    c_norm = np.sum(np.triu(corr_matrix))
+
     modularity = 0.0
     
     # Calculate modularity based on the partition
