@@ -114,7 +114,7 @@ def calculate_modularity(C_g, partitions, corr_matrix):
                     modularity += C_g[i, j]
     
     # Normalize modularity by C_norm
-    modularity /= C_norm
+    modularity /= c_norm
     return modularity
 
 def recursive_spectral_method(C_g, corr_matrix, company_names, min_size=2, modularity_threshold=0.00001):
