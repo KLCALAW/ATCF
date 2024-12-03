@@ -1,0 +1,319 @@
+Ticker,ShortName,Sector_x,Country_x,Region,AverageRating
+AAUK,Anglo Amern plc,Basic Materials,United Kingdom,Europe,14
+ABE,Abertis Infraestructuras SA,Industrials,Spain,Europe,9
+ABHLTD,Alliance Boots Hldgs Ltd,Consumer Services,United Kingdom,Europe,10
+ACAFP,Cr Agricole SA,Financials,France,Europe,5
+ACAFP-CIB,Cr Agricole Corporate and Invt Bk,Financials,France,Europe,10
+ACCOR,ACCOR,Consumer Services,France,Europe,10
+ACEA,Acea Spa,Utilities,Italy,Europe,10
+ADIG,adidas AG,Consumer Goods,Germany,Europe,7
+AEGON,Aegon N.V.,Financials,Netherlands,Europe,10
+AF,AIR FRANCE - KLM,Consumer Services,France,Europe,15
+AF-AirFrance,SOCIETE AIR FRANCE,Consumer Services,France,Europe,17
+AGASSA,ageas SA NV,Financials,Belgium,Europe,6
+AGS,AGBAR,Utilities,Spain,Europe,10
+AGS-Intl,Agbar Intl BV,Utilities,Netherlands,Europe,10
+AIRLIQ,L AIR LIQUIDE SA POUR LTDE EXPLTN PROCDS GEORGS CLDE,Basic Materials,France,Europe,10
+AKZO,AKZO Nobel N V,Basic Materials,Netherlands,Europe,9
+AKZO-ICILD,IMPERIAL Chem Inds Ltd,Basic Materials,United Kingdom,Europe,10
+ALCLCT,Alcatel Lucent,Technology,France,Europe,10
+ALINDR,Alliander NV,Utilities,Netherlands,Europe,3
+ALPHBK,ALPHA Bk AE,Financials,Greece,Europe,10
+ALSTOM,ALSTOM,Industrials,France,Europe,10
+ALT,ALTADIS SA,Consumer Goods,Spain,Europe,10
+ALYD,ALLIED DOMECQ LTD,Consumer Goods,United Kingdom,Europe,10
+ALZSE,Allianz SE,Financials,Germany,Europe,3
+AMROBK,ABN AMRO Bk NV,Financials,Netherlands,Europe,5
+ANGLIA,Nationwide Bldg Soc,Financials,United Kingdom,Europe,6
+ARMLL,ArcelorMittal,Basic Materials,Luxembourg,Europe,9
+ARMLL-FRA,ARCELORMITTAL FRANCE,Basic Materials,France,Europe,17
+ARMLL-Fin,ArcelorMittal Fin,Basic Materials,Luxembourg,Europe,9
+ASSAAB,ASSA ABLOY AB,Industrials,Sweden,Europe,8
+ASSGEN,Assicurazioni Generali S p A,Financials,Italy,Europe,10
+ATCOA,Atlas Copco AB,Industrials,Sweden,Europe,7
+ATSPA,ATLANTIA SPA,Industrials,Italy,Europe,10
+AUST,Rep Austria,Government,Austria,Europe,10
+AVLN,Aviva plc,Financials,United Kingdom,Europe,7
+AWLN-AngWatServ,Anglian Wtr Svcs Ltd,Utilities,United Kingdom,Europe,10
+AXAF,AXA,Financials,France,Europe,10
+AYLL,SAFEWAY LTD,Consumer Services,United Kingdom,Europe,10
+AZN,Astrazeneca PLC,Health Care,United Kingdom,Europe,7
+BAB,Brit Awys plc,Consumer Services,United Kingdom,Europe,9
+BACR-Bank,Barclays Bk plc,Financials,United Kingdom,Europe,7
+BACRED,Mediobanca SpA,Financials,Italy,Europe,10
+BAD,EnBW Energie Baden Wuerttemberg AG,Utilities,Germany,Europe,7
+BANSAB,Bco de Sabadell S A,Financials,Spain,Europe,10
+BAPLC,BAE Sys PLC,Industrials,United Kingdom,Europe,17
+BASFSE,BASF SE,Basic Materials,Germany,Europe,6
+BATSLN,Brit Amern Tob plc,Consumer Goods,United Kingdom,Europe,10
+BBVSM,Bco Bilbao Vizcaya Argentaria S A,Financials,Spain,Europe,7
+BCPN,Bco Comercial Portugues SA,Financials,Portugal,Europe,10
+BELG,Kdom Belgium,Government,Belgium,Europe,13
+BFCM,Bqe Federative Du Cr Mutuel,Financials,France,Europe,6
+BKIR,Gov & Co Bk Irlnd,Financials,Ireland,Europe,10
+BKTSM,Bankinter S A,Financials,Spain,Europe,8
+BMW,Bay Motoren Werke AG,Consumer Goods,Germany,Europe,6
+BNCBPI,Bco BPI SA,Financials,Portugal,Europe,8
+BNP,BNP Paribas,Financials,France,Europe,5
+BOCGP,BOC GROUP Ltd,Basic Materials,United Kingdom,Europe,17
+BOUY,BOUYGUES,Industrials,France,Europe,8
+BPBL,BPB Ltd,Industrials,United Kingdom,Europe,7
+BPLN,BP P.L.C.,Oil & Gas,United Kingdom,Europe,10
+BRISA,Brisa Auto Estradas de Portugal S A,Industrials,Portugal,Europe,17
+BRITEL-BritTel,Brit Telecom PLC,Telecommunications,United Kingdom,Europe,1
+BRITLD,Brit Ld Co plc,Financials,United Kingdom,Europe,10
+BRYBDC,Carlsberg A S,Consumer Goods,Denmark,Europe,10
+BRYBDC-Brew,Carlsberg Breweries A S,Consumer Goods,Denmark,Europe,1
+BSFSHW,BASF Schweiz AG,Basic Materials,Switzerland,Europe,10
+BWGPSK,BAWAG P.S.K,Financials,Austria,Europe,10
+BYIF,Bayer AG,Health Care,Germany,Europe,7
+BYLAN,Bay Landbk Giroz,Financials,Germany,Europe,10
+CAJAME,Caja de Ahorros del Mediterraneo,Financials,Spain,Europe,10
+CARR,Carrefour,Consumer Services,France,Europe,7
+CAWILD,CABLE WIRELESS LTD,Telecommunications,United Kingdom,Europe,10
+CCBP-NATIXI,NATIXIS,Financials,France,Europe,6
+CCLL,Carnival Plc,Consumer Services,United Kingdom,Europe,10
+CENTRI,Centrica plc,Utilities,United Kingdom,Europe,9
+CIRINT,CIR SpA CIE Industriali Riunite,Utilities,Italy,Europe,17
+CLAR,Clariant AG,Basic Materials,Switzerland,Europe,10
+CMFP,Ciments Francais,Industrials,France,Europe,17
+CMZB,Commerzbank AG,Financials,Germany,Europe,10
+CONTI,Contl AG,Consumer Goods,Germany,Europe,10
+CPGLN,Compass Gp PLC,Consumer Services,United Kingdom,Europe,7
+CSGAG,Credit Suisse Gp Ltd,Financials,Switzerland,Europe,10
+CTSGL,COLT Tech SERVICES GROUP Ltd,Telecommunications,United Kingdom,Europe,10
+CXGD,Caixa Geral de Depositos S A,Financials,Portugal,Europe,8
+CYPRUS,Rep Cyprus,Government,Cyprus,Europe,10
+DAA,Deutsche Apotheker Und Aerz,Financials,Germany,Europe,10
+DAMLR,Daimler AG,Consumer Goods,Germany,Europe,10
+DANBNK,Danske Bk A S,Financials,Denmark,Europe,6
+DANONE,DANONE,Consumer Goods,France,Europe,10
+DB,Deutsche Bk AG,Financials,Germany,Europe,7
+DBB,Deutsche Bahn AG,Consumer Services,Germany,Europe,2
+DBR,Fed Rep Germany,Government,Germany,Europe,10
+DENK,Kdom Denmark,Government,Denmark,Europe,10
+DEPFA-Bank,DEPFA Bk Plc,Financials,Ireland,Europe,10
+DEXGRP-CredLoc,Dexia Cr Loc,Financials,France,Europe,10
+DEXO,SODEXO,Consumer Services,France,Europe,10
+DFHH,DEBENHAMS Fin Hldgs Ltd,Consumer Services,United Kingdom,Europe,10
+DIAG,Diageo PLC,Consumer Goods,United Kingdom,Europe,17
+DMGOLN,Daily Mail & Gen Tr Plc,Consumer Services,United Kingdom,Europe,17
+DPW,Deutsche Post AG,Industrials,Germany,Europe,6
+DT,Deutsche Telekom AG,Telecommunications,Germany,Europe,6
+DZBK,DZ Bk AG,Financials,Germany,Europe,10
+EDF,ELECTRICITE DE FRANCE,Utilities,France,Europe,4
+EDP,EDP Energias de Portugal SA,Utilities,Portugal,Europe,10
+EDP-FinBV,EDP Fin BV,Utilities,Netherlands,Europe,10
+ELEBEL,Electrabel,Utilities,Belgium,Europe,7
+ELESM,Endesa S A,Utilities,Spain,Europe,8
+ELIA,Elia Sys Operator SA NV,Utilities,Belgium,Europe,10
+ELIAC,Elisa Oyj,Telecommunications,Finland,Europe,10
+ELTLX,AB Electrolux,Consumer Goods,Sweden,Europe,17
+EMIG,EMI Group Ltd,Consumer Services,United Kingdom,Europe,17
+ENDP,Empresa Nacional de Petroleo,Oil & Gas,Spain,Europe,10
+ENEL,ENEL S p A,Utilities,Italy,Europe,10
+ENI,ENI S.p.A.,Oil & Gas,Italy,Europe,10
+EON-PWGLN,POWERGEN Ltd,Utilities,United Kingdom,Europe,10
+EON-UK,EON UK PLC,Utilities,United Kingdom,Europe,10
+ERGBA,Erste Group Bk AG,Financials,Austria,Europe,6
+ESS,Essent N V,Government,Netherlands,Europe,9
+EVRGSA,Evraz Group SA,Basic Materials,Luxembourg,Europe,18
+EXPGRL-EXPFIN,EXPERIAN Fin PLC,Consumer Services,United Kingdom,Europe,17
+F-FCEBank,FCE Bk PLC,Financials,United Kingdom,Europe,10
+FERRUZ,Edison S p A,Utilities,Italy,Europe,10
+FGPLN,Firstgroup plc,Consumer Services,United Kingdom,Europe,10
+FINL,Rep Finland,Government,Finland,Europe,10
+FORTUM,Fortum Oyj,Utilities,Finland,Europe,9
+FRTR,French Rep,Government,France,Europe,10
+FSEKGA,Fresenius SE & Co KGaA,Health Care,Germany,Europe,7
+GFCFP,Gecina,Financials,France,Europe,10
+GLCORE,Glencore Intl AG,Basic Materials,Switzerland,Europe,10
+GROHE,Grohe Hldg Gmbh,Industrials,Germany,Europe,10
+GROUPE,Casino Guichard Perrachon,Consumer Services,France,Europe,22
+GSK,Glaxosmithkline Plc,Health Care,United Kingdom,Europe,17
+HAMRSN,Hammerson PLC,Financials,United Kingdom,Europe,1
+HAVAS,Havas,Consumer Services,France,Europe,10
+HBOS,HBOS Plc,Financials,United Kingdom,Europe,17
+HBOS-ScotBkPLC,Bk OF SCOTLAND PLC,Financials,United Kingdom,Europe,6
+HEI,HeidelbergCement AG,Industrials,Germany,Europe,10
+HEI-HANSN,HANSON Ltd,Industrials,United Kingdom,Europe,10
+HEIANA,Heineken NV,Consumer Goods,Netherlands,Europe,7
+HEIANA-SCOT,SCOTTISH & NEWCASTLE Ltd,Consumer Goods,United Kingdom,Europe,10
+HENAGK,Henkel AG & Co KGaA,Basic Materials,Germany,Europe,6
+HESLAN,Landbk Hessen thueringen Giroz,Financials,Germany,Europe,5
+HOFP,THALES,Industrials,France,Europe,10
+HSBC,HSBC Hldgs plc,Financials,United Kingdom,Europe,5
+HSBC-HSBCBank,HSBC Bk plc,Financials,United Kingdom,Europe,5
+IBERDU,Iberdrola S A,Utilities,Spain,Europe,6
+IBERDU-Intl,Iberdrola Intl BV,Utilities,Netherlands,Europe,10
+IBERDU-ScotPwr,Scottish Pwr Ltd,Utilities,United Kingdom,Europe,17
+ICELND,Rep Iceland,Government,Iceland,Europe,10
+IFX-HldgBV,Infineon Tech Hldg B V,Technology,Netherlands,Europe,10
+IHOT,INTERCONTINENTAL HOTELS LTD,Consumer Services,United Kingdom,Europe,10
+III,3i Gp plc,Financials,United Kingdom,Europe,9
+IKB,IKB Deutsche Industriebank AG,Financials,Germany,Europe,10
+INTNED,ING Groep NV,Financials,Netherlands,Europe,5
+INTNED-BankNV,ING Bk N V,Financials,Netherlands,Europe,5
+INVSA,Inv AB,Financials,Sweden,Europe,17
+IRELND,Rep Irlnd,Government,Ireland,Europe,10
+ISSAS-Global,ISS Glob A S,Financials,Denmark,Europe,10
+ITALY,Rep Italy,Government,Italy,Europe,10
+ITV,ITV Plc,Consumer Services,United Kingdom,Europe,17
+ITV-Carlton,CARLTON Comms Ltd,Consumer Services,United Kingdom,Europe,10
+JAPTOB-GGL,GALLAHER GROUP Ltd,Consumer Goods,United Kingdom,Europe,10
+KDSM,Koninklijke DSM NV,Basic Materials,Netherlands,Europe,10
+KEL-YorkWat,YORKSHIRE WATER SERVICES Ltd,Utilities,United Kingdom,Europe,10
+KEL-YorkWatfltd,YORKSHIRE WATER SERVICES Fin Ltd,Utilities,United Kingdom,Europe,10
+KINGFI,Kingfisher PLC,Consumer Services,United Kingdom,Europe,8
+KPN,Koninklijke KPN N V,Telecommunications,Netherlands,Europe,8
+KRCP-BankNV,KBC Bk,Financials,Belgium,Europe,10
+LAFCP,Lafarge,Industrials,France,Europe,9
+LAGARD,Lagardere Societes,Consumer Services,France,Europe,10
+LAND-SecPlc,Ld Secs PLC,Financials,United Kingdom,Europe,10
+LAVORO,Bca Naz del Lavoro S p A,Financials,Italy,Europe,10
+LAZIO,Lazio Region,Government,Italy,Europe,10
+LBTG-UPC,UPC Hldg BV,Consumer Services,Netherlands,Europe,10
+LBW,Landbk Baden Wuertbg,Financials,Germany,Europe,10
+LGEN,Legal & Gen Gp PLC,Financials,United Kingdom,Europe,10
+LGRDSA-frnc,Legrand France,Industrials,France,Europe,14
+LIFP,Klepierre,Financials,France,Europe,6
+LINDE,Linde AG,Basic Materials,Germany,Europe,14
+LMETEL,TelefonAB L M Ericsson,Technology,Sweden,Europe,10
+LNX,Lanxess,Basic Materials,Germany,Europe,17
+LOREAL,L'Oreal,Consumer Goods,France,Europe,3
+LUFTHA,Deutsche Lufthansa AG,Consumer Services,Germany,Europe,10
+MANSE,MAN SE,Industrials,Germany,Europe,14
+METSO,Metso Corp,Industrials,Finland,Europe,10
+MICHLN,CIE GENERALE des ETABLISSEMENTS MICHELIN,Consumer Goods,France,Europe,14
+MKGA,Merck KGaA,Health Care,Germany,Europe,10
+MKS,MARKS & SPENCER GROUP PLC,Consumer Services,United Kingdom,Europe,17
+MKS-M+SPlc,Marks & Spencer p l c,Consumer Services,United Kingdom,Europe,17
+MOET,LVMH Moet Hennessy Louis Vuitton,Consumer Goods,France,Europe,4
+MONTE,Bca Monte dei Paschi di Siena S p A,Financials,Italy,Europe,13
+MUNRE,Munich Re,Financials,Germany,Europe,10
+NDB,Norddeutsche Landbk Girozentrale,Financials,Germany,Europe,7
+NESTLE,Nestle S A,Consumer Goods,Switzerland,Europe,4
+NETHRS,Kdom Neth,Government,Netherlands,Europe,10
+NGGPLC,Natl Grid Gas Plc,Utilities,United Kingdom,Europe,10
+NGP,Natl Grid Plc,Utilities,United Kingdom,Europe,8
+NGP-NGET,Natl Grid Electricity Transmission plc,Utilities,United Kingdom,Europe,7
+NIBBNK,NIBC Bk NV,Financials,Netherlands,Europe,10
+NIECO,Nielsen Co,Consumer Services,Netherlands,Europe,10
+NIPSHG-PILKING,PILKINGTON GROUP Ltd,Industrials,United Kingdom,Europe,10
+NOKIA,Nokia Oyj,Technology,Finland,Europe,14
+NORWAY,Kdom Norway,Government,Norway,Europe,10
+NOVART,Novartis AG,Health Care,Switzerland,Europe,10
+NSINO,Norske Skogindustrier ASA,Basic Materials,Norway,Europe,18
+NXP,NXP B.V.,Technology,Germany,Europe,10
+NXT,Next plc,Consumer Services,United Kingdom,Europe,17
+OTE,Hellenic Telecom Org SA,Telecommunications,Greece,Europe,10
+PAUTO,Porsche Automobil Hldg SE,Consumer Goods,Germany,Europe,8
+PERNOD,Pernod Ricard,Consumer Goods,France,Europe,8
+PEUGOT,Peugeot SA,Consumer Goods,France,Europe,14
+PEUGOT-BanqPsa,Bqe Psa Fin,Financials,France,Europe,10
+PIRELN,Pirelli & C SpA,Consumer Goods,Italy,Europe,9
+PORTUG,Rep Portugal,Government,Portugal,Europe,10
+PPWRC,Pub Pwr Corp SA,Utilities,Greece,Europe,10
+PREUSS,TUI AG,Consumer Services,Germany,Europe,11
+PRUFIN,Prudential PLC,Financials,United Kingdom,Europe,6
+PSON,Pearson plc,Consumer Services,United Kingdom,Europe,17
+PUBFP,Publicis Groupe SA,Consumer Services,France,Europe,9
+RAGAG-EVODEG,Evonik Degussa GmbH,Basic Materials,Germany,Europe,10
+RBOSCH,Robert Bosch GmBH,Consumer Goods,Germany,Europe,10
+RDMB,Rodamco Europe NV,Financials,Netherlands,Europe,10
+RDNA-ShellPet,SHELL Pete N V,Oil & Gas,Netherlands,Europe,10
+RDNA-ShellPetLt,Shell Pete Co Ltd,Oil & Gas,United Kingdom,Europe,10
+RDSPLC,ROYAL DUTCH SHELL PLC,Oil & Gas,United Kingdom,Europe,10
+RECSA,Red Electrica Corporacion S A,Utilities,Spain,Europe,10
+RENAUL,Renault,Consumer Goods,France,Europe,11
+RENAUL-RCIBanq,RCI Bqe,Consumer Goods,France,Europe,10
+RENTPL,Rentokil Initial 1927 Plc,Industrials,United Kingdom,Europe,10
+RHEINM-Rheinmet,Rheinmetall AG,Consumer Goods,Germany,Europe,10
+RIOLN,Rio Tinto plc,Basic Materials,United Kingdom,Europe,10
+RNK,Rank Gp PLC,Consumer Services,United Kingdom,Europe,10
+RNTKIL,RENTOKIL INITIAL PLC,Industrials,United Kingdom,Europe,9
+ROLLS,Rolls Royce plc,Industrials,United Kingdom,Europe,10
+ROSW,Roche Hldg Ltd,Health Care,Switzerland,Europe,10
+RSA-InsPLC,Royal & Sun Alliance Ins PLC,Financials,United Kingdom,Europe,10
+RSAIG,RSA Ins GROUP PLC,Financials,United Kingdom,Europe,17
+RXLDEV,REXEL Dev SAS,Industrials,France,Europe,10
+SANPAO,Intesa Sanpaolo SpA,Financials,Italy,Europe,9
+SANTNDR,Bco SANTANDER SA,Financials,Spain,Europe,7
+SANUK,SANTANDER UK PLC,Financials,United Kingdom,Europe,7
+SAPSJ-SGM,Sappi Papier Hldg GmBH,Basic Materials,Austria,Europe,12
+SBRY,J Sainsbury PLC,Consumer Services,United Kingdom,Europe,10
+SCACAP,Svenska Cellulosa AB SCA,Consumer Goods,Sweden,Europe,17
+SCANIA,SCANIA AB,Industrials,Sweden,Europe,14
+SCMNVX,Swisscom AG,Telecommunications,Switzerland,Europe,6
+SCORS,SCOR SE,Financials,France,Europe,5
+SCOTPO-Ukplc,Scottish Pwr UK PLC,Utilities,United Kingdom,Europe,10
+SEB,Skandinaviska Enskilda Banken AB,Financials,Sweden,Europe,5
+SECURI,Securitas AB,Industrials,Sweden,Europe,9
+SESG,SES,Telecommunications,Luxembourg,Europe,10
+SGCLN,Stagecoach Gp Plc,Consumer Services,United Kingdom,Europe,10
+SGRO,SEGRO PLC,Financials,United Kingdom,Europe,10
+SICILY,Region Sicily,Government,Italy,Europe,10
+SIEM,Siemens AG,Industrials,Germany,Europe,17
+SKF,AB SKF,Industrials,Sweden,Europe,10
+SLTRW-Kelda,KELDA GROUP Ltd,Utilities,United Kingdom,Europe,17
+SMIN,Smiths Gp Plc,Industrials,United Kingdom,Europe,10
+SOCGEN,Societe Generale,Financials,France,Europe,6
+SOLL,Soc Of Lloyd S,Financials,United Kingdom,Europe,10
+SOLVAY,Solvay SA,Basic Materials,Belgium,Europe,9
+SPAIN,Kdom Spain,Government,Spain,Europe,10
+STAN,STANDARD CHARTERED PLC,Financials,United Kingdom,Europe,6
+STAN-Bank,Std Chartered Bk,Financials,United Kingdom,Europe,5
+STB,Storebrand ASA,Financials,Norway,Europe,10
+STENA,Stena Aktiebolag,Industrials,Sweden,Europe,10
+STGOBN,Cie de St Gobain,Industrials,France,Europe,10
+STLIFE-LifeAss,STANDARD LIFE Assurn Ltd,Financials,United Kingdom,Europe,10
+STM,Stmicroelectronics N V,Technology,Netherlands,Europe,1
+STORA,Stora Enso CORP,Basic Materials,Finland,Europe,10
+SVSKHB,Svenska Handelsbanken AB,Financials,Sweden,Europe,5
+SWED,Kdom Sweden,Government,Sweden,Europe,10
+SWEDBK,Swedbank AB,Financials,Sweden,Europe,5
+SWEMAT,Swedish Match AB,Consumer Goods,Sweden,Europe,17
+SWISS,Swiss Confederation,Government,Switzerland,Europe,10
+SWLHLD,Swiss Life Hldg Ltd,Financials,Switzerland,Europe,10
+SWREL,Swiss Reins Co Ltd,Financials,Switzerland,Europe,10
+SWSL,Swiss Life Ltd,Financials,Switzerland,Europe,10
+SXLTD,SIX CONTINENTS LTD,Consumer Services,United Kingdom,Europe,10
+SYNNVX,Syngenta AG,Basic Materials,Switzerland,Europe,7
+TATAGP-CORUSLTD,CORUS GROUP Ltd,Basic Materials,United Kingdom,Europe,17
+TATELN,Tate & Lyle PLC,Consumer Goods,United Kingdom,Europe,14
+TELDAN,TDC A/S,Telecommunications,Denmark,Europe,17
+TELEFO,Telefonica S A,Telecommunications,Spain,Europe,17
+TELNOR,Telenor ASA,Telecommunications,Norway,Europe,7
+TFIFP,Societe Television Francaise 1,Consumer Services,France,Europe,9
+TIIMN,Telecom Italia SpA,Telecommunications,Italy,Europe,12
+TKA,Telekom Austria AG,Telecommunications,Austria,Europe,14
+TKAGR,ThyssenKrupp AG,Industrials,Germany,Europe,14
+TMSNRP-TRGL,THOMSON REUTERS GROUP Ltd,Consumer Services,United Kingdom,Europe,10
+TNET,Telenet Group Hldg Nv,Consumer Services,Belgium,Europe,13
+TOTALN,Total SA,Oil & Gas,France,Europe,10
+TSCO,Tesco PLC,Consumer Services,United Kingdom,Europe,17
+TWPLC,TAYLOR WIMPEY PLC,Consumer Goods,United Kingdom,Europe,10
+TYECOG,Tyco Electrs Group SA,Industrials,Luxembourg,Europe,10
+UBS,UBS AG,Financials,Switzerland,Europe,5
+UCBAG,UniCredit Bk AG,Financials,Germany,Europe,19
+UKIN,Utd Kdom Gt Britn & Nthn Irlnd,Government,United Kingdom,Europe,10
+ULVR,Unilever N V,Consumer Goods,Netherlands,Europe,17
+UPMKYM,UPM Kymmene CORP,Basic Materials,Finland,Europe,10
+USPA,UniCredit SpA,Financials,Italy,Europe,10
+UU,Utd Utils plc,Utilities,United Kingdom,Europe,1
+VEOLIA,Veolia Environnement,Utilities,France,Europe,7
+VINCI,Vinci,Industrials,France,Europe,10
+VIRFIN,VIRGIN MEDIA Fin PLC,Telecommunications,United Kingdom,Europe,13
+VIVNDI,Vivendi,Telecommunications,France,Europe,9
+VLOF,Valeo,Consumer Goods,France,Europe,10
+VLVY,AB Volvo,Industrials,Sweden,Europe,7
+VLVY-Treasury,Volvo Treas AB,Industrials,Sweden,Europe,7
+VOD,Vodafone Gp PLC,Telecommunications,United Kingdom,Europe,10
+VW,Volkswagen AG,Consumer Goods,Germany,Europe,6
+WEINBG,Wienerberger Ag,Industrials,Austria,Europe,9
+WENL,WENDEL,Financials,France,Europe,10
+WINDAQ,Wind Acquisition Fin SA,Financials,Luxembourg,Europe,17
+WOLKLU,Wolters Kluwer N V,Consumer Services,Netherlands,Europe,9
+WPPGRP-2005,WPP 2005 Ltd,Consumer Services,United Kingdom,Europe,17
+YORPOW,Yorkshire Pwr Gp Ltd,Utilities,United Kingdom,Europe,10
+ZINCO,Zurich Ins Co Ltd,Financials,Switzerland,Europe,1
