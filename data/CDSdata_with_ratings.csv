@@ -1,4 +1,4 @@
-Ticker,ShortName,Sector_x,Country_x,Region,AverageRating
+Ticker,ShortName,Sector,Country,Region,AverageRating
 AAUK,Anglo Amern plc,Basic Materials,United Kingdom,Europe,14
 ABE,Abertis Infraestructuras SA,Industrials,Spain,Europe,9
 ABHLTD,Alliance Boots Hldgs Ltd,Consumer Services,United Kingdom,Europe,10
