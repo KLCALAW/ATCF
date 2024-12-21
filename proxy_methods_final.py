@@ -9,6 +9,8 @@ from modified_louvain_method import *
 import cvxpy as cp
 import copy
 import matplotlib.pyplot as plt
+from scipy.stats import shapiro
+from scipy.stats import ttest_rel
 
 
 #-----------------------------------------------------------------------------------------------------------------------------
@@ -635,6 +637,46 @@ def calculate_percentage_better(rmse_csra_normal_list, rmse_csra_communities_lis
     print(f"Number of days where RMSE for normal CSRA method > RMSE for community CSRA method : {count}")
     print(f"Percentage of days where CSRA Communities method is better: {percentage_better}%")  
 
+def paired_t_test(rmse_csra_normal_list, rmse_csra_communities_list):
+
+    #We perform a paired t test since we are testing a statistic for the same sample (the same tickers and proxy methods) over time
+
+    #First check if differences are normally distributed (required for a t test)
+
+    #Calculate the differences
+    differences = np.array(rmse_csra_normal_list) - np.array(rmse_csra_communities_list)
+    
+    level_of_significance = 0.05
+
+    #Perform Shapiro-Wilk test
+    stat, p = shapiro(differences)
+    print(f"Shapiro-Wilk Test Statistic: {stat}, p-value: {p}")
+
+    print("CHECKING FOR NORMALITY OF DIFFERENCES")
+    print("--------------------------------------")
+
+    if p > level_of_significance:
+        print("The differences appear to be normally distributed (fail to reject H0).")
+
+        print("Since the differences are normally distributed, we can perform a paired t-test")
+        #Perform paired t-test
+        t_stat_paired_t_test, p_paired_t_test = ttest_rel(rmse_csra_normal_list, rmse_csra_communities_list)
+
+        print("PAIRED T-TEST RESULTS ")
+        print("--------------------------------------")
+
+        print(f"Paired T-Test Statistic: {t_stat_paired_t_test}, p-value: {p_paired_t_test}")
+
+        if (p_paired_t_test/2 < level_of_significance and t_stat_paired_t_test > 0):
+            print("Reject the null hypothesis for a one-tailed test: Method 1 has higher RMSE.")
+            print("Therefore the average RMSE for the normal CSRA method is significantly greater than the average RMSE for the community CSRA method.")
+        else:
+            print("The differences do not appear to be normally distributed (reject H0).")
+
+        #NOTES
+        #------
+        #We divide the p_paired_t_test by two to account for the fact that we are doing a one tail test (by defualt this p-value is calculated for a two tail test)
+        #We check if t_stat_paired_t_test to make sure that it corresponds to the positive tail of the distribution, since we are chekcing if the mean method one's RMSE is GREATER than the mean of method two's RMSE
 
 #-----------------------------------------------------------------------------------------------------------------------------
                                         #PLOTTING METHODS
