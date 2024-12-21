@@ -342,7 +342,7 @@ def get_bucket(metadata, company_communities, ticker_proxy):
 
 
 #-----------------------------------------------------------------------------------------------------------------------------
-                                            #MAIN METHODS
+                                    #MAIN METHODS (CALCULATIONS AND ANALYSIS)
 #-----------------------------------------------------------------------------------------------------------------------------
 
 
@@ -440,11 +440,13 @@ def calculate_proxies_and_add_to_metadata(metadata, company_communities, prices_
     return metadata_with_proxies
 
 
+
 def calculate_proxy_time_series(
     tickers, metadata, company_communities, prices_data, index_data, liquid_bucket, dates
 ):
     """
-    Calculates the time series of proxy values for a specific ticker.
+    Calculates the time series of proxy values for the specified tickers using the different proxy methods. 
+    Outputs a final DataFrame with the actual spread, proxy spread using intersection method, proxy spread using CSRA method, and proxy spread using community methods.
 
     Parameters:
     - ticker: str, the ticker for which to calculate proxies.
@@ -568,8 +570,74 @@ def calculate_rmse(actual_spread, proxy_spread):
     # Return the square root of the mean squared error
     return np.sqrt(mean_squared_error)
 
+def calculate_rmse_curves(proxy_time_series_df, dates):
+
+    """
+    Calculates the RMSE curves for normal proxy methods and community proxy methods over the given dates
+
+    parameters:
+    proxy_time_series_df: pd.DataFrame, time series of actual and proxy values for all tickers.
+    dates: list, list of dates over which the cds/price data is available (dates for cds/price data and index data should be the same).
+    """
+
+    #Lists for rmse's for normal proxy methods
+    rmse_csra_normal_list = []
+    rmse_intersection_normal_list = []
+
+    #Lists for rmse's for community proxy methods
+    rmse_csra_communities_list = []
+    rmse_intersection_communities_list = []
+
+
+    for date in dates:
+
+        #Filter the proxy time series data by the date
+        ProxyCSRA_spreads_filtered = proxy_time_series_df[proxy_time_series_df['Date'] == date]
+        
+        #Get the actual spreads and the proxy spreads
+        actual_spreads = ProxyCSRA_spreads_filtered['ActualSpread']
+        proxy_spreads_csra_normal = ProxyCSRA_spreads_filtered['ProxyCSRA']
+        proxy_spreads_csra_communities = ProxyCSRA_spreads_filtered['ProxyCSRACommunity']
+        
+        #Calculate the RMSE
+        rmse_csra_normal = calculate_rmse(actual_spreads, proxy_spreads_csra_normal)
+        rmse_csra_communities = calculate_rmse(actual_spreads, proxy_spreads_csra_communities)
+
+        rmse_csra_normal_list.append(rmse_csra_normal)
+        rmse_csra_communities_list.append(rmse_csra_communities)
+
+
+    return rmse_csra_normal_list, rmse_csra_communities_list
+
+
+def calculate_percentage_better(rmse_csra_normal_list, rmse_csra_communities_list):
+
+    """
+    Calculate the percentage of days where CSRA Communities method is better than CSRA Normal method.
+
+    parameters:
+    rmse_csra_normal_list: list, A list of RMSE values for CSRA Normal method.
+    rmse_csra_communities_list: list, A list of RMSE values for CSRA Communities method.
+    """
+
+    rmse_csra_normal_list_np = np.array(rmse_csra_normal_list)
+    rmse_csra_communities_list_np = np.array(rmse_csra_communities_list)
+
+    # Find indexes where elements in rmse_csra_normal_list are greater than in rmse_csra_communities_list (inidicates CSRA Communities method is better)
+    greater_than_condition = rmse_csra_normal_list_np > rmse_csra_communities_list_np
+
+    # Count the number of True values
+    count = np.sum(greater_than_condition)
+
+    #Calculate the percentage
+    percentage_better = (count/len(rmse_csra_normal_list)) * 100
+
+    print(f"Number of days where RMSE for normal CSRA method > RMSE for community CSRA method : {count}")
+    print(f"Percentage of days where CSRA Communities method is better: {percentage_better}%")  
+
+
 #-----------------------------------------------------------------------------------------------------------------------------
-                                            #PLOTTING METHODS
+                                        #PLOTTING METHODS
 #-----------------------------------------------------------------------------------------------------------------------------
 
 # Plotting the time series of the proxy methods to compare them with the actual spread
@@ -606,3 +674,28 @@ def plot_proxy_time_series_ticker(proxy_time_series):
     # Show the plot
     plt.tight_layout()
     plt.show()
+
+def plot_rmse_curves(rmse_csra_normal_list, rmse_csra_communities_list, dates):
+
+    """
+    Plots the RMSE curves for normal proxy methods and community proxy methods over the given dates.
+
+    parameters:
+    rmse_csra_normal_list: list, A list of RMSE values for CSRA Normal method.
+    rmse_csra_communities_list: list, A list of RMSE values for CSRA Communities method.
+    dates: list, list of dates over which the cds/price data is available (dates for cds/price data and index data should be the same).
+    """
+
+    num_days = [i for i in range(len(dates))]
+
+    #Plot RMSE for CSRA normal and CSRA communities
+    plt.plot(num_days, rmse_csra_normal_list, label='CSRA Normal')
+    plt.plot(num_days, rmse_csra_communities_list, label='CSRA Communities')
+    plt.xlabel('Days')
+    plt.ylabel('RMSE')
+    plt.title(f'RMSE for CSRA Normal and CSRA Communities over {len(dates)} days')
+    plt.legend()
+
+      
+
+
