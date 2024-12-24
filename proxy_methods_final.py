@@ -474,7 +474,7 @@ def calculate_proxies_and_add_to_metadata(metadata, company_communities, prices_
 
 
 def calculate_proxy_time_series(
-    tickers, metadata, company_communities, prices_data, index_data, liquid_bucket, dates
+    tickers, metadata, company_communities, prices_data, index_data, dates
 ):
     """
     Calculates the time series of proxy values for the specified tickers using the different proxy methods. 
@@ -486,7 +486,6 @@ def calculate_proxy_time_series(
     - company_communities: list of lists, each inner list is a community containing tickers.
     - prices_data: pd.DataFrame, price data with tickers as columns.
     - index_data: additional index-related data.
-    - liquid_bucket: dict, liquid bucket information (e.g., Sector, Country, Rating).
     - date_range: iterable of dates.
 
     Returns:
@@ -495,7 +494,7 @@ def calculate_proxy_time_series(
     results = []
 
     for ticker in tickers:
-
+        liquid_bucket = get_bucket(metadata, company_communities, ticker)
         for date in dates:
             try:
                 # Ensure the date is in pandas datetime format
