@@ -251,7 +251,7 @@ def calculate_proxy_intersection_method(ticker, metadata, coefficients, ticker_c
     coefficients_ticker_community = coefficients[company_community]
 
     if company_bucket not in coefficients_ticker_community.index:
-        print(f"Bucket not found for Company {ticker} ")
+        #print(f"Bucket not found for Company {ticker} (INTERSECTION METHOD) ")
         return global_spread
     else:
         # print(f"Bucket FOUND for Company {ticker} ")
@@ -737,7 +737,11 @@ def paired_t_test(rmse_csra_normal_list, rmse_csra_communities_list):
             print("Reject the null hypothesis for a one-tailed test: Method 1 has higher RMSE.")
             print("Therefore the average RMSE for the normal CSRA method is significantly greater than the average RMSE for the community CSRA method.")
         else:
-            print("The differences do not appear to be normally distributed (reject H0).")
+            print("Fail to reject the null hypothesis for a one-tailed test: Method 1 has lower RMSE..")
+
+    else: 
+        print("The differences do not appear to be normally distributed (reject H0).")
+        print("Cannot perform a paired t-test.")
 
         #NOTES
         #------
