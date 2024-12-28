@@ -11,6 +11,8 @@ import copy
 import matplotlib.pyplot as plt
 from scipy.stats import shapiro
 from scipy.stats import ttest_rel
+from utils import progress_bar, clear_progress_bar
+
 
 
 #-----------------------------------------------------------------------------------------------------------------------------
@@ -47,15 +49,17 @@ def calculate_coefficients_intersection_method(prices_data, communities, metadat
         # print(f"Liquid bucket spread for the date {date} is {liquid_bucket_spread}")
         global_spread = liquid_bucket_spread
 
-    # create all possible combinations of the buckets
-    unique_buckets = []
+    
 
     for community_number, community in enumerate(communities):
+
+        # create all possible combinations of the buckets
+        unique_buckets = []
 
         for i in range(len(community)):
             bucket = f"{metadata.loc[community[i], 'Sector']}, {metadata.loc[community[i], 'Country']}, {metadata.loc[community[i], 'AverageRating']}"
             if bucket not in unique_buckets:
-                unique_buckets.append(bucket)
+                unique_buckets.append(bucket) #Get the unique buckets for the community
 
         if not use_index and f'{liquid_bucket_sector}, {liquid_bucket_country}, {liquid_bucket_ratings}' in unique_buckets:
             # remove the liquid bucket from the unique buckets
@@ -74,7 +78,7 @@ def calculate_coefficients_intersection_method(prices_data, communities, metadat
             if bucket in unique_buckets:
                 j = unique_buckets.index(bucket)
                 indicators[i, j] = 1
-
+        
         # a_0
         a_0 = np.tile(global_spread, (len(community), 1))
 
@@ -502,7 +506,7 @@ def calculate_proxy_time_series(
     """
     results = []
  
-    for ticker in tickers:
+    for ticker_index,ticker in enumerate(tickers):
         liquid_bucket = get_bucket(metadata, company_communities, ticker)
         for date in dates:
             try:
@@ -602,6 +606,9 @@ def calculate_proxy_time_series(
             except Exception as e:
                 print(f"Error calculating proxies for {ticker} on {date}: {e}")
         
+        progress_bar(ticker_index / len(tickers))  #progress bar for each ticker
+    
+    clear_progress_bar()
         # Convert results to a DataFrame
     return pd.DataFrame(results)
 
