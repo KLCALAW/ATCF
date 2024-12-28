@@ -20,6 +20,7 @@ from utils import progress_bar, clear_progress_bar
 #-----------------------------------------------------------------------------------------------------------------------------
 # function to calculate proxy using the intersection method by averages
 def calculate_proxy_intersection_method_average(ticker, metadata, communities, ticker_community, prices_data, index_data, liquid_bucket, date, use_index = False):
+
     if not isinstance(communities[0], list):
         communities = [communities]
         ticker_community = 1
@@ -28,20 +29,22 @@ def calculate_proxy_intersection_method_average(ticker, metadata, communities, t
     prices_data = prices_data.loc[date,:]
 
     metadata = metadata.set_index('Ticker')
-    metadata_ticker_community = metadata[metadata.index.isin(communities[ticker_community - 1])]
+    metadata_ticker_community = metadata[metadata.index.isin(communities[ticker_community - 1])] #Get the metadata for the tickers in the community
     # remove ticker from the metadata_ticker_community
     metadata_ticker_community = metadata_ticker_community[metadata_ticker_community.index != ticker]
+
+    #Extract the tickers in the community in the same bucket as the ticker of interest
     tickers_bucket_community = metadata_ticker_community[(metadata_ticker_community['Sector'] == metadata.loc[ticker, 'Sector']) & 
                                                          (metadata_ticker_community['Country'] == metadata.loc[ticker, 'Country']) & 
                                                          (metadata_ticker_community['AverageRating'] == metadata.loc[ticker, 'AverageRating'])].index.to_list()
 
-
+    #Check if there is only one ticker in the bucket
     if len(tickers_bucket_community) == 0:
         #print(f"Bucket not found for Company {ticker}")
         if use_index:
             #Extract spread from index data for the date
             index_data = index_data[index_data['Date'] == date]
-            index_spread = index_data['ConvSpread'].values[0]
+            index_spread = index_data['ConvSpread'].values[0] #.values converts column to numpy array. We then get the first element of the array.
             # print(f"Index spread for the date {date} is {index_spread}")
             proxy = index_spread
         else:
@@ -52,6 +55,7 @@ def calculate_proxy_intersection_method_average(ticker, metadata, communities, t
             # print(f"Liquid bucket spread for the date {date} is {liquid_bucket_spread}")
             proxy = liquid_bucket_spread
     else:
+        #If there are tickers in the bucket, calculate the average spread for the tickers in the bucket
         proxy = prices_data[tickers_bucket_community].mean(axis=0)
 
     return proxy
@@ -189,8 +193,23 @@ def calculate_proxy_coeff_csra_community(prices_data, communities, metadata, ind
         prices_data_community = prices_data_community.T.to_numpy()
         prices_data_community = prices_data_community.reshape(-1, 1)
 
-        # tranform the data to the log space
+        # min_val = prices_data_community.min()
+        # max_val = prices_data_community.max()
+
+        # # Min-Max Normalization
+        # prices_data_community_normalized = (prices_data_community - min_val) / (max_val - min_val)
+
+        # # Add a small constant to avoid log(0)
+        # epsilon = 1e-8  # Small positive constant
+        # prices_data_community_normalized += epsilon
+
+        # # Transform the data to the log space
+        # prices_data_community_log = np.log(prices_data_community_normalized)
+
         prices_data_community_log = np.log(prices_data_community)
+
+
+
         # create the masks
         mask = np.zeros((prices_data_community.shape[0], len(sectors_community) + len(countries_community) + len(ratings_community)))
 
@@ -220,10 +239,15 @@ def calculate_proxy_coeff_csra_community(prices_data, communities, metadata, ind
         # Define optimization variables
         betas = cp.Variable(shape=(len(sectors_community) + len(countries_community) + len(ratings_community), 1))
 
+        
         beta_contributions = mask @ betas
 
+        regularization = 1e-4 * cp.norm(betas, 2) #A small value like 1e-41e-4 assumes that the residual error ∥y−Xβ∥22∥y−Xβ∥22​ is numerically dominant and regularization is used primarily to stabilize the solution.
+        objective = cp.Minimize(cp.norm(prices_data_community_log - beta_0 - beta_contributions, "fro")**2 + regularization)
+
+        
         # Define the objective function
-        objective = cp.Minimize(cp.norm(prices_data_community_log - beta_0 -  beta_contributions, "fro")**2)
+        #objective = cp.Minimize(cp.norm(prices_data_community_log - beta_0 -  beta_contributions, "fro")**2)
 
         
         # Solve the optimization problem
