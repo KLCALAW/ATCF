@@ -726,10 +726,13 @@ def calculate_rmse_curves(proxy_time_series_df, dates):
     rmse_csra_communities_list = []
     rmse_intersection_communities_list = []
 
+    #Convert the date column to datetime format
+    proxy_time_series_df['Date'] = pd.to_datetime(proxy_time_series_df['Date'])
+
 
     for date in dates:
+        #Filter the proxy time series data by the date        
 
-        #Filter the proxy time series data by the date
         Proxy_spreads_filtered = proxy_time_series_df[proxy_time_series_df['Date'] == date]
         
         #Get the actual spreads and the proxy spreads
@@ -738,6 +741,8 @@ def calculate_rmse_curves(proxy_time_series_df, dates):
         proxy_spreads_intersection_communities = Proxy_spreads_filtered['Proxy_Intersection_Community']
         proxy_spreads_csra_normal = Proxy_spreads_filtered['Proxy_CSRA']
         proxy_spreads_csra_communities = Proxy_spreads_filtered['Proxy_CSRA_Community']
+
+
 
         #Calculate the RMSE for intersection method
         rmse_intersection_normal = calculate_rmse(actual_spreads, proxy_spreads_intersection_normal)
@@ -757,7 +762,7 @@ def calculate_rmse_curves(proxy_time_series_df, dates):
     return rmse_intersection_normal_list, rmse_intersection_communities_list, rmse_csra_normal_list, rmse_csra_communities_list
 
 
-def calculate_percentage_better(rmse_csra_normal_list, rmse_csra_communities_list):
+def calculate_percentage_better(rmse_csra_normal_list, rmse_csra_communities_list, method = "CSRA"):
 
     """
     Calculate the percentage of days where CSRA Communities method is better than CSRA Normal method.
@@ -779,8 +784,8 @@ def calculate_percentage_better(rmse_csra_normal_list, rmse_csra_communities_lis
     #Calculate the percentage
     percentage_better = (count/len(rmse_csra_normal_list)) * 100
 
-    print(f"Number of days where RMSE for normal CSRA method > RMSE for community CSRA method : {count}")
-    print(f"Percentage of days where CSRA Communities method is better: {percentage_better}%")  
+    print(f"Number of days where RMSE for normal {method} method > RMSE for community {method} method : {count}")
+    print(f"Percentage of days where {method} Communities method is better: {percentage_better}%")  
 
 def paired_t_test(rmse_csra_normal_list, rmse_csra_communities_list):
 
@@ -867,7 +872,7 @@ def plot_proxy_time_series_ticker(proxy_time_series):
     plt.tight_layout()
     plt.show()
 
-def plot_rmse_curves(rmse_csra_normal_list, rmse_csra_communities_list, dates):
+def plot_rmse_curves(rmse_csra_normal_list, rmse_csra_communities_list, dates, method = "CSRA"):
 
     """
     Plots the RMSE curves for normal proxy methods and community proxy methods over the given dates.
@@ -881,11 +886,11 @@ def plot_rmse_curves(rmse_csra_normal_list, rmse_csra_communities_list, dates):
     num_days = [i for i in range(len(dates))]
 
     #Plot RMSE for CSRA normal and CSRA communities
-    plt.plot(num_days, rmse_csra_normal_list, label='CSRA Normal')
-    plt.plot(num_days, rmse_csra_communities_list, label='CSRA Communities')
+    plt.plot(num_days, rmse_csra_normal_list, label=f'{method} Normal')
+    plt.plot(num_days, rmse_csra_communities_list, label=f'{method} Communities')
     plt.xlabel('Days')
     plt.ylabel('RMSE')
-    plt.title(f'RMSE for CSRA Normal and CSRA Communities over {len(dates)} days')
+    plt.title(f'RMSE for {method} Normal and {method} Communities over {len(dates)} days')
     plt.legend()
 
       
