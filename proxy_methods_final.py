@@ -893,6 +893,7 @@ def plot_rmse_curves(rmse_csra_normal_list, rmse_csra_communities_list, dates, m
     plt.title(f'RMSE for {method} Normal and {method} Communities over {len(dates)} days')
     plt.legend()
 
+
       
 
 
