@@ -886,15 +886,107 @@ def plot_rmse_curves(rmse_csra_normal_list, rmse_csra_communities_list, dates, m
     num_days = [i for i in range(len(dates))]
 
     #Plot RMSE for CSRA normal and CSRA communities
+    plt.figure(figsize=(15, 6))
     plt.plot(num_days, rmse_csra_normal_list, label=f'{method} Normal')
     plt.plot(num_days, rmse_csra_communities_list, label=f'{method} Communities')
-    plt.xlabel('Days')
-    plt.ylabel('RMSE')
-    plt.title(f'RMSE for {method} Normal and {method} Communities over {len(dates)} days')
+    plt.xlabel('Days', fontsize=14, fontweight='bold')
+    plt.ylabel('RMSE', fontsize=14, fontweight='bold')
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
+    plt.title(f'RMSE for {method} Normal and {method} Communities over {len(dates)} days', fontsize=16, fontweight='bold')
     plt.legend()
 
 
+#-----------------------------------------------------------------------------------------------------------------------------
+                                        #CATEGORY BREAKDOWN METHODS
+#-----------------------------------------------------------------------------------------------------------------------------
+
       
+def generate_rmse_curves_per_category(category,proxy_time_series_filtered,metadata):
+
+    """
+    Generates RMSE curves for normal and community proxy methods for each category in the metadata.
+
+    Parameters:
+    category: str, the category to breakdown the RMSE curves by.
+    proxy_time_series_filtered: pd.DataFrame, time series of actual and proxy values for all tickers.
+    metadata: pd.DataFrame, metadata including the tickers and categories.
+
+    Returns:
+    rmse_intersection_normal_list_category: list, RMSE values for intersection normal method for each category.
+    rmse_intersection_communities_list_category: list, RMSE values for intersection communities method for each category.
+    rmse_csra_normal_list_category: list, RMSE values for CSRA normal method for each category.
+    rmse_csra_communities_list_category: list, RMSE values for CSRA communities method for each category.
+    """
+    
+    dates = proxy_time_series_filtered['Date'].unique().tolist()
+
+    category_values = metadata[category].unique().tolist()
+
+    rmse_intersection_normal_list_category = []
+
+    rmse_intersection_communities_list_category = []
+
+    rmse_csra_normal_list_category = []
+
+    rmse_csra_communities_list_category = []
+
+    for category_value in category_values:
+
+        category_tickers = metadata[metadata[category] == category_value]['Ticker'].tolist()
+
+        proxy_time_series_filtered_category = proxy_time_series_filtered[proxy_time_series_filtered['Ticker'].isin(category_tickers)]
+
+        rmse_intersection_normal_list, rmse_intersection_communities_list, rmse_csra_normal_list, rmse_csra_communities_list = calculate_rmse_curves(proxy_time_series_filtered_category, dates)
+
+        rmse_intersection_normal_list_category.append(rmse_intersection_normal_list)
+
+        rmse_intersection_communities_list_category.append(rmse_intersection_communities_list)
+
+        rmse_csra_normal_list_category.append(rmse_csra_normal_list)
+
+        rmse_csra_communities_list_category.append(rmse_csra_communities_list)
+
+    return rmse_intersection_normal_list_category, rmse_intersection_communities_list_category, rmse_csra_normal_list_category, rmse_csra_communities_list_category
+
+
+def create_results_table_for_category(category,metadata,rmse_intersection_normal_list_category, rmse_intersection_communities_list_category, rmse_csra_normal_list_category, rmse_csra_communities_list_category):
+
+    """
+    Creates a table with average RMSE for each category for all methods.
+
+    Parameters:
+    category: str, the category to breakdown the RMSE curves by.
+    metadata: pd.DataFrame, metadata including the tickers and categories.
+    rmse_intersection_normal_list_category: list, RMSE values for intersection normal method for each category.
+    rmse_intersection_communities_list_category: list, RMSE values for intersection communities method for each category.
+    rmse_csra_normal_list_category: list, RMSE values for CSRA normal method for each category.
+    rmse_csra_communities_list_category: list, RMSE values for CSRA communities method for each category.
+
+    Returns:
+    average_rmse_per_category_df: pd.DataFrame, table with average RMSE for each category for all methods.
+    """
+    
+    category_values = metadata[category].unique().tolist()
+
+
+    average_rmse_per_category = []
+
+    for i, category_value in enumerate(category_values):
+
+        average_rmse_intersection_normal_list_category = np.mean(rmse_intersection_normal_list_category[i])
+        average_rmse_intersection_communities_list_category = np.mean(rmse_intersection_communities_list_category[i])
+        average_rmse_csra_normal_list_category = np.mean(rmse_csra_normal_list_category[i])
+        average_rmse_csra_communities_list_category = np.mean(rmse_csra_communities_list_category[i])
+
+        average_rmse_per_category.append([category_value, average_rmse_intersection_normal_list_category, average_rmse_intersection_communities_list_category, average_rmse_csra_normal_list_category, average_rmse_csra_communities_list_category])
+
+    average_rmse_per_category_df = pd.DataFrame(average_rmse_per_category, columns=[category, 'Average_RMSE_Intersection_Normal', 'Average_RMSE_Intersection_Communities','Average_RMSE_CSRA_Normal', 'Average_RMSE_CSRA_Communities'])
+
+    average_rmse_per_category_df.to_csv(f'results/average_rmse_per_{category}.csv', index=False)
+
+    return average_rmse_per_category_df
+
 
 
 
