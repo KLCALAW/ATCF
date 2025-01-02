@@ -12,6 +12,8 @@ import matplotlib.pyplot as plt
 from scipy.stats import shapiro
 from scipy.stats import ttest_rel
 from utils import progress_bar, clear_progress_bar
+import seaborn as sns
+from scipy.stats import binom_test
 
 
 
@@ -708,7 +710,33 @@ def calculate_rmse(actual_spread, proxy_spread):
     # Return the square root of the mean squared error
     return np.sqrt(mean_squared_error)
 
-def calculate_rmse_curves(proxy_time_series_df, dates):
+
+def calculate_mape(actual_spread, proxy_spread):
+
+    """
+    Calculate the MAPE between actual spreads and proxy spreads.
+
+    Parameters:
+    - actual_spread (pd.Series or np.array): The actual spreads
+    - proxy_spread (pd.Series or np.array): The proxy spreads 
+
+    Returns:
+    - float: The MAPE value.
+    """
+
+    # Ensure the inputs are numpy arrays
+    actual_spread = np.array(actual_spread)
+    proxy_spread = np.array(proxy_spread)
+
+    # Calculate the absolute percentage error
+    absolute_percentage_error = np.abs((actual_spread - proxy_spread) / actual_spread)
+
+    # Calculate the mean of absolute percentage errors
+    mean_absolute_percentage_error = np.mean(absolute_percentage_error) * 100
+
+    return mean_absolute_percentage_error
+
+def calculate_error_curves(proxy_time_series_df,dates,error_type = "RMSE"):
 
     """
     Calculates the RMSE curves for normal proxy methods and community proxy methods over the given dates
@@ -718,13 +746,19 @@ def calculate_rmse_curves(proxy_time_series_df, dates):
     dates: list, list of dates over which the cds/price data is available (dates for cds/price data and index data should be the same).
     """
 
+    if error_type == "RMSE":
+
+        error_method = calculate_rmse
+    elif error_type == "MAPE":
+        error_method = calculate_mape
+
     #Lists for rmse's for normal proxy methods
-    rmse_csra_normal_list = []
-    rmse_intersection_normal_list = []
+    error_csra_normal_list = []
+    error_intersection_normal_list = []
 
     #Lists for rmse's for community proxy methods
-    rmse_csra_communities_list = []
-    rmse_intersection_communities_list = []
+    error_csra_communities_list = []
+    error_intersection_communities_list = []
 
     #Convert the date column to datetime format
     proxy_time_series_df['Date'] = pd.to_datetime(proxy_time_series_df['Date'])
@@ -745,21 +779,21 @@ def calculate_rmse_curves(proxy_time_series_df, dates):
 
 
         #Calculate the RMSE for intersection method
-        rmse_intersection_normal = calculate_rmse(actual_spreads, proxy_spreads_intersection_normal)
-        rmse_intersection_communities = calculate_rmse(actual_spreads, proxy_spreads_intersection_communities)
+        error_intersection_normal = error_method(actual_spreads, proxy_spreads_intersection_normal)
+        error_intersection_communities = error_method(actual_spreads, proxy_spreads_intersection_communities)
 
-        rmse_intersection_normal_list.append(rmse_intersection_normal)
-        rmse_intersection_communities_list.append(rmse_intersection_communities)
+        error_intersection_normal_list.append(error_intersection_normal)
+        error_intersection_communities_list.append(error_intersection_communities)
         
         #Calculate the RMSE for CSRA method
-        rmse_csra_normal = calculate_rmse(actual_spreads, proxy_spreads_csra_normal)
-        rmse_csra_communities = calculate_rmse(actual_spreads, proxy_spreads_csra_communities)
+        error_csra_normal = error_method(actual_spreads, proxy_spreads_csra_normal)
+        error_csra_communities = error_method(actual_spreads, proxy_spreads_csra_communities)
 
-        rmse_csra_normal_list.append(rmse_csra_normal)
-        rmse_csra_communities_list.append(rmse_csra_communities)
+        error_csra_normal_list.append(error_csra_normal)
+        error_csra_communities_list.append(error_csra_communities)
 
 
-    return rmse_intersection_normal_list, rmse_intersection_communities_list, rmse_csra_normal_list, rmse_csra_communities_list
+    return error_intersection_normal_list, error_intersection_communities_list, error_csra_normal_list, error_csra_communities_list
 
 
 def calculate_percentage_better(rmse_csra_normal_list, rmse_csra_communities_list, method = "CSRA"):
@@ -790,7 +824,7 @@ def calculate_percentage_better(rmse_csra_normal_list, rmse_csra_communities_lis
 def paired_t_test(rmse_csra_normal_list, rmse_csra_communities_list):
 
     #We perform a paired t test since we are testing a statistic for the same sample (the same tickers and proxy methods) over time
-
+    
     #First check if differences are normally distributed (required for a t test)
 
     #Calculate the differences
@@ -831,7 +865,59 @@ def paired_t_test(rmse_csra_normal_list, rmse_csra_communities_list):
         #------
         #We divide the p_paired_t_test by two to account for the fact that we are doing a one tail test (by defualt this p-value is calculated for a two tail test)
         #We check if t_stat_paired_t_test to make sure that it corresponds to the positive tail of the distribution, since we are chekcing if the mean method one's RMSE is GREATER than the mean of method two's RMSE
-    
+
+def shapiro_wilk_test(error_normal_proxy_list, error_community_proxy_list):
+
+    """
+    Perform the Shapiro-Wilk test to check if the differences in error values for normal and community proxy methods are normally distributed.
+
+    Parameters:
+    error_normal_proxy_list: list, error values for normal proxy method.
+    error_community_proxy_list: list, error values for community proxy method.
+    """
+
+    differences = np.array(error_normal_proxy_list) - np.array(error_community_proxy_list)
+
+    # Perform the Shapiro-Wilk test
+    stat, p = shapiro(differences)
+
+    # Output results
+    print(f"Shapiro-Wilk Test Statistic: {stat:.4f}")
+    print(f"Shapiro-Wilk Test p-value: {p:.4f}")
+
+    # Interpretation
+    alpha = 0.05  # Significance level
+    if p > alpha:
+        print("Fail to reject the null hypothesis: The differences are normally distributed.")
+    else:
+        print("Reject the null hypothesis: The differences are not normally distributed.")
+
+def sign_test(error_normal_proxy_list, error_community_proxy_list):
+
+    differences = np.array(error_normal_proxy_list) - np.array(error_community_proxy_list)
+
+    #Count the number of positive differences
+    positive_differences = np.sum(differences > 0)
+
+    #Count the number of negative differences
+    negative_differences = np.sum(differences < 0)
+
+    p_value = binom_test(positive_differences, n = len(differences), p = 0.5, alternative = 'greater')
+
+
+    # Output results
+    print(f"Positive differences: {positive_differences}")
+    print(f"Negative differences: {negative_differences}")
+    print(f"Sign Test p-value: {p_value:.4f}")
+
+
+    # Interpretation
+    alpha = 0.05  # Significance level
+    if p_value < alpha:
+        print("Reject the null hypothesis: The median difference is significantly greater than zero.")
+    else:
+        print("Fail to reject the null hypothesis: No significant difference.")
+
 #-----------------------------------------------------------------------------------------------------------------------------
                                         #PLOTTING METHODS
 #-----------------------------------------------------------------------------------------------------------------------------
@@ -872,7 +958,7 @@ def plot_proxy_time_series_ticker(proxy_time_series):
     plt.tight_layout()
     plt.show()
 
-def plot_rmse_curves(rmse_csra_normal_list, rmse_csra_communities_list, dates, method = "CSRA"):
+def plot_error_curves(rmse_csra_normal_list, rmse_csra_communities_list, dates, method = "CSRA", error_type = "RMSE"):
 
     """
     Plots the RMSE curves for normal proxy methods and community proxy methods over the given dates.
@@ -890,12 +976,38 @@ def plot_rmse_curves(rmse_csra_normal_list, rmse_csra_communities_list, dates, m
     plt.plot(num_days, rmse_csra_normal_list, label=f'{method} Normal')
     plt.plot(num_days, rmse_csra_communities_list, label=f'{method} Communities')
     plt.xlabel('Days', fontsize=14, fontweight='bold')
-    plt.ylabel('RMSE', fontsize=14, fontweight='bold')
+    plt.ylabel(f'{error_type}', fontsize=14, fontweight='bold')
     plt.xticks(fontsize=12)
     plt.yticks(fontsize=12)
-    plt.title(f'RMSE for {method} Normal and {method} Communities over {len(dates)} days', fontsize=16, fontweight='bold')
+    plt.title(f'{error_type} for {method} Normal and {method} Communities over {len(dates)} days', fontsize=16, fontweight='bold')
     plt.legend()
 
+def plot_difference_distribution(error_normal_proxy_list, error_community_proxy_list, error_type = "MAPE"):
+
+    """
+    Plot the distribution of differences between error values for normal and community proxy methods.
+
+    Parameters:
+    error_normal_proxy_list: list, error values for normal proxy method.
+    error_community_proxy_list: list, error values for community proxy method.
+    """
+
+    differences = np.array(error_normal_proxy_list) - np.array(error_community_proxy_list)
+
+    mean = np.mean(differences)
+
+    median = np.median(differences)
+
+    plt.figure(figsize=(12, 6))
+    sns.histplot(differences, kde=True, bins=20)
+    plt.axvline(mean, color='r', linestyle='--', label=f'Mean: {mean:.2f}')
+    plt.axvline(median, color='g', linestyle='--', label=f'Median: {median:.2f}')
+    plt.title(f"Distribution of Differences in {error_type} Values", fontsize=16)
+    plt.xlabel(f"Difference in {error_type}", fontsize=12)
+    plt.ylabel("Frequency", fontsize=12)
+    plt.grid(True, linestyle='--', alpha=0.6)
+    plt.legend()
+    plt.show()
 
 #-----------------------------------------------------------------------------------------------------------------------------
                                         #CATEGORY BREAKDOWN METHODS
@@ -937,7 +1049,7 @@ def generate_rmse_curves_per_category(category,proxy_time_series_filtered,metada
 
         proxy_time_series_filtered_category = proxy_time_series_filtered[proxy_time_series_filtered['Ticker'].isin(category_tickers)]
 
-        rmse_intersection_normal_list, rmse_intersection_communities_list, rmse_csra_normal_list, rmse_csra_communities_list = calculate_rmse_curves(proxy_time_series_filtered_category, dates)
+        rmse_intersection_normal_list, rmse_intersection_communities_list, rmse_csra_normal_list, rmse_csra_communities_list = calculate_error_curves(proxy_time_series_filtered_category, dates)
 
         rmse_intersection_normal_list_category.append(rmse_intersection_normal_list)
 
