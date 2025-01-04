@@ -1,271 +1,270 @@
 Ticker,ShortName,Sector,Region,Country,AverageRating
-ABE,Abertis Infraestructuras SA,Industrials,Europe,Spain,9
-ABHLTD,Alliance Boots Hldgs Ltd,Consumer Services,Europe,United Kingdom,10
+ABE,Abertis Infraestructuras SA,Cyclical,Europe,Spain,9
+ABHLTD,Alliance Boots Hldgs Ltd,Cyclical,Europe,United Kingdom,10
 ACAFP,Cr Agricole SA,Financials,Europe,France,5
 ACAFP-CIB,Cr Agricole Corporate and Invt Bk,Financials,Europe,France,10
-ACCOR,ACCOR,Consumer Services,Europe,France,10
-ACEA,Acea Spa,Utilities,Europe,Italy,10
-ADIG,adidas AG,Consumer Goods,Europe,Germany,7
+ACCOR,ACCOR,Cyclical,Europe,France,10
+ACEA,Acea Spa,Non Cyclical,Europe,Italy,10
+ADIG,adidas AG,Non Cyclical,Europe,Germany,7
 AEGON,Aegon N.V.,Financials,Europe,Netherlands,10
 AGASSA,ageas SA NV,Financials,Europe,Belgium,6
-AGS,AGBAR,Utilities,Europe,Spain,10
-AGS-Intl,Agbar Intl BV,Utilities,Europe,Netherlands,10
-AIRLIQ,L AIR LIQUIDE SA POUR LTDE EXPLTN PROCDS GEORGS CLDE,Basic Materials,Europe,France,10
-AKZO,AKZO Nobel N V,Basic Materials,Europe,Netherlands,9
-AKZO-ICILD,IMPERIAL Chem Inds Ltd,Basic Materials,Europe,United Kingdom,10
-ALINDR,Alliander NV,Utilities,Europe,Netherlands,3
-ALSTOM,ALSTOM,Industrials,Europe,France,10
-ALT,ALTADIS SA,Consumer Goods,Europe,Spain,10
-ALYD,ALLIED DOMECQ LTD,Consumer Goods,Europe,United Kingdom,10
+AGS,AGBAR,Non Cyclical,Europe,Spain,10
+AGS-Intl,Agbar Intl BV,Non Cyclical,Europe,Netherlands,10
+AIRLIQ,L AIR LIQUIDE SA POUR LTDE EXPLTN PROCDS GEORGS CLDE,Cyclical,Europe,France,10
+AKZO,AKZO Nobel N V,Cyclical,Europe,Netherlands,9
+AKZO-ICILD,IMPERIAL Chem Inds Ltd,Cyclical,Europe,United Kingdom,10
+ALINDR,Alliander NV,Non Cyclical,Europe,Netherlands,3
+ALSTOM,ALSTOM,Cyclical,Europe,France,10
+ALT,ALTADIS SA,Non Cyclical,Europe,Spain,10
+ALYD,ALLIED DOMECQ LTD,Non Cyclical,Europe,United Kingdom,10
 ALZSE,Allianz SE,Financials,Europe,Germany,3
 AMROBK,ABN AMRO Bk NV,Financials,Europe,Netherlands,5
 ANGLIA,Nationwide Bldg Soc,Financials,Europe,United Kingdom,6
-ARMLL-Fin,ArcelorMittal Fin,Basic Materials,Europe,Luxembourg,9
-ASSAAB,ASSA ABLOY AB,Industrials,Europe,Sweden,8
+ARMLL-Fin,ArcelorMittal Fin,Cyclical,Europe,Luxembourg,9
+ASSAAB,ASSA ABLOY AB,Cyclical,Europe,Sweden,8
 ASSGEN,Assicurazioni Generali S p A,Financials,Europe,Italy,10
-ATCOA,Atlas Copco AB,Industrials,Europe,Sweden,7
-ATSPA,ATLANTIA SPA,Industrials,Europe,Italy,10
+ATCOA,Atlas Copco AB,Cyclical,Europe,Sweden,7
+ATSPA,ATLANTIA SPA,Cyclical,Europe,Italy,10
 AVLN,Aviva plc,Financials,Europe,United Kingdom,7
-AWLN-AngWatServ,Anglian Wtr Svcs Ltd,Utilities,Europe,United Kingdom,10
+AWLN-AngWatServ,Anglian Wtr Svcs Ltd,Non Cyclical,Europe,United Kingdom,10
 AXAF,AXA,Financials,Europe,France,10
-AYLL,SAFEWAY LTD,Consumer Services,Europe,United Kingdom,10
-AZN,Astrazeneca PLC,Health Care,Europe,United Kingdom,7
-BAB,Brit Awys plc,Consumer Services,Europe,United Kingdom,9
+AYLL,SAFEWAY LTD,Cyclical,Europe,United Kingdom,10
+AZN,Astrazeneca PLC,Non Cyclical,Europe,United Kingdom,7
+BAB,Brit Awys plc,Cyclical,Europe,United Kingdom,9
 BACR-Bank,Barclays Bk plc,Financials,Europe,United Kingdom,7
 BACRED,Mediobanca SpA,Financials,Europe,Italy,10
-BAD,EnBW Energie Baden Wuerttemberg AG,Utilities,Europe,Germany,7
+BAD,EnBW Energie Baden Wuerttemberg AG,Non Cyclical,Europe,Germany,7
 BANSAB,Bco de Sabadell S A,Financials,Europe,Spain,10
-BAPLC,BAE Sys PLC,Industrials,Europe,United Kingdom,17
-BASFSE,BASF SE,Basic Materials,Europe,Germany,6
-BATSLN,Brit Amern Tob plc,Consumer Goods,Europe,United Kingdom,10
+BAPLC,BAE Sys PLC,Cyclical,Europe,United Kingdom,17
+BASFSE,BASF SE,Cyclical,Europe,Germany,6
+BATSLN,Brit Amern Tob plc,Non Cyclical,Europe,United Kingdom,10
 BBVSM,Bco Bilbao Vizcaya Argentaria S A,Financials,Europe,Spain,7
 BFCM,Bqe Federative Du Cr Mutuel,Financials,Europe,France,6
 BKTSM,Bankinter S A,Financials,Europe,Spain,8
-BMW,Bay Motoren Werke AG,Consumer Goods,Europe,Germany,6
+BMW,Bay Motoren Werke AG,Non Cyclical,Europe,Germany,6
 BNP,BNP Paribas,Financials,Europe,France,5
-BOCGP,BOC GROUP Ltd,Basic Materials,Europe,United Kingdom,17
-BOUY,BOUYGUES,Industrials,Europe,France,8
-BPBL,BPB Ltd,Industrials,Europe,United Kingdom,7
-BPLN,BP P.L.C.,Oil & Gas,Europe,United Kingdom,10
-BRITEL-BritTel,Brit Telecom PLC,Telecommunications,Europe,United Kingdom,1
+BOCGP,BOC GROUP Ltd,Cyclical,Europe,United Kingdom,17
+BOUY,BOUYGUES,Cyclical,Europe,France,8
+BPBL,BPB Ltd,Cyclical,Europe,United Kingdom,7
+BPLN,BP P.L.C.,Cyclical,Europe,United Kingdom,10
+BRITEL-BritTel,Brit Telecom PLC,Cyclical,Europe,United Kingdom,1
 BRITLD,Brit Ld Co plc,Financials,Europe,United Kingdom,10
-BRYBDC,Carlsberg A S,Consumer Goods,Europe,Denmark,10
-BRYBDC-Brew,Carlsberg Breweries A S,Consumer Goods,Europe,Denmark,1
-BSFSHW,BASF Schweiz AG,Basic Materials,Europe,Switzerland,10
+BRYBDC,Carlsberg A S,Non Cyclical,Europe,Denmark,10
+BRYBDC-Brew,Carlsberg Breweries A S,Non Cyclical,Europe,Denmark,1
+BSFSHW,BASF Schweiz AG,Cyclical,Europe,Switzerland,10
 BWGPSK,BAWAG P.S.K,Financials,Europe,Austria,10
-BYIF,Bayer AG,Health Care,Europe,Germany,7
+BYIF,Bayer AG,Non Cyclical,Europe,Germany,7
 BYLAN,Bay Landbk Giroz,Financials,Europe,Germany,10
-CARR,Carrefour,Consumer Services,Europe,France,7
-CAWILD,CABLE WIRELESS LTD,Telecommunications,Europe,United Kingdom,10
+CARR,Carrefour,Cyclical,Europe,France,7
+CAWILD,CABLE WIRELESS LTD,Cyclical,Europe,United Kingdom,10
 CCBP-NATIXI,NATIXIS,Financials,Europe,France,6
-CCLL,Carnival Plc,Consumer Services,Europe,United Kingdom,10
-CENTRI,Centrica plc,Utilities,Europe,United Kingdom,9
-CLAR,Clariant AG,Basic Materials,Europe,Switzerland,10
-CMFP,Ciments Francais,Industrials,Europe,France,17
+CCLL,Carnival Plc,Cyclical,Europe,United Kingdom,10
+CENTRI,Centrica plc,Non Cyclical,Europe,United Kingdom,9
+CLAR,Clariant AG,Cyclical,Europe,Switzerland,10
+CMFP,Ciments Francais,Cyclical,Europe,France,17
 CMZB,Commerzbank AG,Financials,Europe,Germany,10
-CONTI,Contl AG,Consumer Goods,Europe,Germany,10
-CPGLN,Compass Gp PLC,Consumer Services,Europe,United Kingdom,7
+CONTI,Contl AG,Non Cyclical,Europe,Germany,10
+CPGLN,Compass Gp PLC,Cyclical,Europe,United Kingdom,7
 CSGAG,Credit Suisse Gp Ltd,Financials,Europe,Switzerland,10
-CTSGL,COLT Tech SERVICES GROUP Ltd,Telecommunications,Europe,United Kingdom,10
+CTSGL,COLT Tech SERVICES GROUP Ltd,Cyclical,Europe,United Kingdom,10
 DAA,Deutsche Apotheker Und Aerz,Financials,Europe,Germany,10
-DAMLR,Daimler AG,Consumer Goods,Europe,Germany,10
+DAMLR,Daimler AG,Non Cyclical,Europe,Germany,10
 DANBNK,Danske Bk A S,Financials,Europe,Denmark,6
-DANONE,DANONE,Consumer Goods,Europe,France,10
+DANONE,DANONE,Non Cyclical,Europe,France,10
 DB,Deutsche Bk AG,Financials,Europe,Germany,7
-DBB,Deutsche Bahn AG,Consumer Services,Europe,Germany,2
+DBB,Deutsche Bahn AG,Cyclical,Europe,Germany,2
 DEPFA-Bank,DEPFA Bk Plc,Financials,Europe,Ireland,10
-DEXO,SODEXO,Consumer Services,Europe,France,10
-DFHH,DEBENHAMS Fin Hldgs Ltd,Consumer Services,Europe,United Kingdom,10
-DIAG,Diageo PLC,Consumer Goods,Europe,United Kingdom,17
-DMGOLN,Daily Mail & Gen Tr Plc,Consumer Services,Europe,United Kingdom,17
-DPW,Deutsche Post AG,Industrials,Europe,Germany,6
-DT,Deutsche Telekom AG,Telecommunications,Europe,Germany,6
+DEXO,SODEXO,Cyclical,Europe,France,10
+DFHH,DEBENHAMS Fin Hldgs Ltd,Cyclical,Europe,United Kingdom,10
+DIAG,Diageo PLC,Non Cyclical,Europe,United Kingdom,17
+DMGOLN,Daily Mail & Gen Tr Plc,Cyclical,Europe,United Kingdom,17
+DPW,Deutsche Post AG,Cyclical,Europe,Germany,6
+DT,Deutsche Telekom AG,Cyclical,Europe,Germany,6
 DZBK,DZ Bk AG,Financials,Europe,Germany,10
-EDF,ELECTRICITE DE FRANCE,Utilities,Europe,France,4
-EDP,EDP Energias de Portugal SA,Utilities,Europe,Portugal,10
-ELEBEL,Electrabel,Utilities,Europe,Belgium,7
-ELESM,Endesa S A,Utilities,Europe,Spain,8
-ELIA,Elia Sys Operator SA NV,Utilities,Europe,Belgium,10
-ELIAC,Elisa Oyj,Telecommunications,Europe,Finland,10
-ELTLX,AB Electrolux,Consumer Goods,Europe,Sweden,17
-ENDP,Empresa Nacional de Petroleo,Oil & Gas,Europe,Spain,10
-ENEL,ENEL S p A,Utilities,Europe,Italy,10
-ENI,ENI S.p.A.,Oil & Gas,Europe,Italy,10
-EON-PWGLN,POWERGEN Ltd,Utilities,Europe,United Kingdom,10
-EON-UK,EON UK PLC,Utilities,Europe,United Kingdom,10
+EDF,ELECTRICITE DE FRANCE,Non Cyclical,Europe,France,4
+EDP,EDP Energias de Portugal SA,Non Cyclical,Europe,Portugal,10
+ELEBEL,Electrabel,Non Cyclical,Europe,Belgium,7
+ELESM,Endesa S A,Non Cyclical,Europe,Spain,8
+ELIA,Elia Sys Operator SA NV,Non Cyclical,Europe,Belgium,10
+ELIAC,Elisa Oyj,Cyclical,Europe,Finland,10
+ELTLX,AB Electrolux,Non Cyclical,Europe,Sweden,17
+ENDP,Empresa Nacional de Petroleo,Cyclical,Europe,Spain,10
+ENEL,ENEL S p A,Non Cyclical,Europe,Italy,10
+ENI,ENI S.p.A.,Cyclical,Europe,Italy,10
+EON-PWGLN,POWERGEN Ltd,Non Cyclical,Europe,United Kingdom,10
+EON-UK,EON UK PLC,Non Cyclical,Europe,United Kingdom,10
 ERGBA,Erste Group Bk AG,Financials,Europe,Austria,6
-EVRGSA,Evraz Group SA,Basic Materials,Europe,Luxembourg,18
-EXPGRL-EXPFIN,EXPERIAN Fin PLC,Consumer Services,Europe,United Kingdom,17
+EVRGSA,Evraz Group SA,Cyclical,Europe,Luxembourg,18
+EXPGRL-EXPFIN,EXPERIAN Fin PLC,Cyclical,Europe,United Kingdom,17
 F-FCEBank,FCE Bk PLC,Financials,Europe,United Kingdom,10
-FERRUZ,Edison S p A,Utilities,Europe,Italy,10
-FGPLN,Firstgroup plc,Consumer Services,Europe,United Kingdom,10
-FORTUM,Fortum Oyj,Utilities,Europe,Finland,9
-FSEKGA,Fresenius SE & Co KGaA,Health Care,Europe,Germany,7
+FERRUZ,Edison S p A,Non Cyclical,Europe,Italy,10
+FGPLN,Firstgroup plc,Cyclical,Europe,United Kingdom,10
+FORTUM,Fortum Oyj,Non Cyclical,Europe,Finland,9
+FSEKGA,Fresenius SE & Co KGaA,Non Cyclical,Europe,Germany,7
 GFCFP,Gecina,Financials,Europe,France,10
-GSK,Glaxosmithkline Plc,Health Care,Europe,United Kingdom,17
+GSK,Glaxosmithkline Plc,Non Cyclical,Europe,United Kingdom,17
 HAMRSN,Hammerson PLC,Financials,Europe,United Kingdom,1
-HAVAS,Havas,Consumer Services,Europe,France,10
+HAVAS,Havas,Cyclical,Europe,France,10
 HBOS,HBOS Plc,Financials,Europe,United Kingdom,17
 HBOS-ScotBkPLC,Bk OF SCOTLAND PLC,Financials,Europe,United Kingdom,6
-HEI,HeidelbergCement AG,Industrials,Europe,Germany,10
-HEI-HANSN,HANSON Ltd,Industrials,Europe,United Kingdom,10
-HEIANA,Heineken NV,Consumer Goods,Europe,Netherlands,7
-HEIANA-SCOT,SCOTTISH & NEWCASTLE Ltd,Consumer Goods,Europe,United Kingdom,10
-HENAGK,Henkel AG & Co KGaA,Basic Materials,Europe,Germany,6
+HEI,HeidelbergCement AG,Cyclical,Europe,Germany,10
+HEI-HANSN,HANSON Ltd,Cyclical,Europe,United Kingdom,10
+HEIANA,Heineken NV,Non Cyclical,Europe,Netherlands,7
+HEIANA-SCOT,SCOTTISH & NEWCASTLE Ltd,Non Cyclical,Europe,United Kingdom,10
+HENAGK,Henkel AG & Co KGaA,Cyclical,Europe,Germany,6
 HESLAN,Landbk Hessen thueringen Giroz,Financials,Europe,Germany,5
-HOFP,THALES,Industrials,Europe,France,10
+HOFP,THALES,Cyclical,Europe,France,10
 HSBC,HSBC Hldgs plc,Financials,Europe,United Kingdom,5
 HSBC-HSBCBank,HSBC Bk plc,Financials,Europe,United Kingdom,5
-IBERDU,Iberdrola S A,Utilities,Europe,Spain,6
-IBERDU-Intl,Iberdrola Intl BV,Utilities,Europe,Netherlands,10
-IBERDU-ScotPwr,Scottish Pwr Ltd,Utilities,Europe,United Kingdom,17
-IFX-HldgBV,Infineon Tech Hldg B V,Technology,Europe,Netherlands,10
-IHOT,INTERCONTINENTAL HOTELS LTD,Consumer Services,Europe,United Kingdom,10
+IBERDU,Iberdrola S A,Non Cyclical,Europe,Spain,6
+IBERDU-Intl,Iberdrola Intl BV,Non Cyclical,Europe,Netherlands,10
+IBERDU-ScotPwr,Scottish Pwr Ltd,Non Cyclical,Europe,United Kingdom,17
+IFX-HldgBV,Infineon Tech Hldg B V,Cyclical,Europe,Netherlands,10
+IHOT,INTERCONTINENTAL HOTELS LTD,Cyclical,Europe,United Kingdom,10
 III,3i Gp plc,Financials,Europe,United Kingdom,9
 IKB,IKB Deutsche Industriebank AG,Financials,Europe,Germany,10
 INTNED,ING Groep NV,Financials,Europe,Netherlands,5
 INTNED-BankNV,ING Bk N V,Financials,Europe,Netherlands,5
 INVSA,Inv AB,Financials,Europe,Sweden,17
 ISSAS-Global,ISS Glob A S,Financials,Europe,Denmark,10
-ITV,ITV Plc,Consumer Services,Europe,United Kingdom,17
-ITV-Carlton,CARLTON Comms Ltd,Consumer Services,Europe,United Kingdom,10
-JAPTOB-GGL,GALLAHER GROUP Ltd,Consumer Goods,Europe,United Kingdom,10
-KDSM,Koninklijke DSM NV,Basic Materials,Europe,Netherlands,10
-KEL-YorkWat,YORKSHIRE WATER SERVICES Ltd,Utilities,Europe,United Kingdom,10
-KEL-YorkWatfltd,YORKSHIRE WATER SERVICES Fin Ltd,Utilities,Europe,United Kingdom,10
-KINGFI,Kingfisher PLC,Consumer Services,Europe,United Kingdom,8
-KPN,Koninklijke KPN N V,Telecommunications,Europe,Netherlands,8
+ITV,ITV Plc,Cyclical,Europe,United Kingdom,17
+ITV-Carlton,CARLTON Comms Ltd,Cyclical,Europe,United Kingdom,10
+JAPTOB-GGL,GALLAHER GROUP Ltd,Non Cyclical,Europe,United Kingdom,10
+KDSM,Koninklijke DSM NV,Cyclical,Europe,Netherlands,10
+KEL-YorkWat,YORKSHIRE WATER SERVICES Ltd,Non Cyclical,Europe,United Kingdom,10
+KEL-YorkWatfltd,YORKSHIRE WATER SERVICES Fin Ltd,Non Cyclical,Europe,United Kingdom,10
+KINGFI,Kingfisher PLC,Cyclical,Europe,United Kingdom,8
+KPN,Koninklijke KPN N V,Cyclical,Europe,Netherlands,8
 KRCP-BankNV,KBC Bk,Financials,Europe,Belgium,10
-LAFCP,Lafarge,Industrials,Europe,France,9
-LAGARD,Lagardere Societes,Consumer Services,Europe,France,10
+LAFCP,Lafarge,Cyclical,Europe,France,9
+LAGARD,Lagardere Societes,Cyclical,Europe,France,10
 LAND-SecPlc,Ld Secs PLC,Financials,Europe,United Kingdom,10
 LAVORO,Bca Naz del Lavoro S p A,Financials,Europe,Italy,10
-LBTG-UPC,UPC Hldg BV,Consumer Services,Europe,Netherlands,10
+LBTG-UPC,UPC Hldg BV,Cyclical,Europe,Netherlands,10
 LBW,Landbk Baden Wuertbg,Financials,Europe,Germany,10
 LGEN,Legal & Gen Gp PLC,Financials,Europe,United Kingdom,10
-LGRDSA-frnc,Legrand France,Industrials,Europe,France,14
+LGRDSA-frnc,Legrand France,Cyclical,Europe,France,14
 LIFP,Klepierre,Financials,Europe,France,6
-LINDE,Linde AG,Basic Materials,Europe,Germany,14
-LMETEL,TelefonAB L M Ericsson,Technology,Europe,Sweden,10
-LNX,Lanxess,Basic Materials,Europe,Germany,17
-LOREAL,L'Oreal,Consumer Goods,Europe,France,3
-LUFTHA,Deutsche Lufthansa AG,Consumer Services,Europe,Germany,10
-MANSE,MAN SE,Industrials,Europe,Germany,14
-METSO,Metso Corp,Industrials,Europe,Finland,10
-MICHLN,CIE GENERALE des ETABLISSEMENTS MICHELIN,Consumer Goods,Europe,France,14
-MKGA,Merck KGaA,Health Care,Europe,Germany,10
-MKS,MARKS & SPENCER GROUP PLC,Consumer Services,Europe,United Kingdom,17
-MKS-M+SPlc,Marks & Spencer p l c,Consumer Services,Europe,United Kingdom,17
-MOET,LVMH Moet Hennessy Louis Vuitton,Consumer Goods,Europe,France,4
+LINDE,Linde AG,Cyclical,Europe,Germany,14
+LMETEL,TelefonAB L M Ericsson,Cyclical,Europe,Sweden,10
+LNX,Lanxess,Cyclical,Europe,Germany,17
+LOREAL,L'Oreal,Non Cyclical,Europe,France,3
+LUFTHA,Deutsche Lufthansa AG,Cyclical,Europe,Germany,10
+MANSE,MAN SE,Cyclical,Europe,Germany,14
+METSO,Metso Corp,Cyclical,Europe,Finland,10
+MICHLN,CIE GENERALE des ETABLISSEMENTS MICHELIN,Non Cyclical,Europe,France,14
+MKGA,Merck KGaA,Non Cyclical,Europe,Germany,10
+MKS,MARKS & SPENCER GROUP PLC,Cyclical,Europe,United Kingdom,17
+MKS-M+SPlc,Marks & Spencer p l c,Cyclical,Europe,United Kingdom,17
+MOET,LVMH Moet Hennessy Louis Vuitton,Non Cyclical,Europe,France,4
 MONTE,Bca Monte dei Paschi di Siena S p A,Financials,Europe,Italy,13
 MUNRE,Munich Re,Financials,Europe,Germany,10
 NDB,Norddeutsche Landbk Girozentrale,Financials,Europe,Germany,7
-NESTLE,Nestle S A,Consumer Goods,Europe,Switzerland,4
-NGGPLC,Natl Grid Gas Plc,Utilities,Europe,United Kingdom,10
-NGP,Natl Grid Plc,Utilities,Europe,United Kingdom,8
-NGP-NGET,Natl Grid Electricity Transmission plc,Utilities,Europe,United Kingdom,7
+NESTLE,Nestle S A,Non Cyclical,Europe,Switzerland,4
+NGGPLC,Natl Grid Gas Plc,Non Cyclical,Europe,United Kingdom,10
+NGP,Natl Grid Plc,Non Cyclical,Europe,United Kingdom,8
+NGP-NGET,Natl Grid Electricity Transmission plc,Non Cyclical,Europe,United Kingdom,7
 NIBBNK,NIBC Bk NV,Financials,Europe,Netherlands,10
-NIECO,Nielsen Co,Consumer Services,Europe,Netherlands,10
-NIPSHG-PILKING,PILKINGTON GROUP Ltd,Industrials,Europe,United Kingdom,10
-NOVART,Novartis AG,Health Care,Europe,Switzerland,10
-NXT,Next plc,Consumer Services,Europe,United Kingdom,17
-PAUTO,Porsche Automobil Hldg SE,Consumer Goods,Europe,Germany,8
-PERNOD,Pernod Ricard,Consumer Goods,Europe,France,8
-PEUGOT,Peugeot SA,Consumer Goods,Europe,France,14
+NIECO,Nielsen Co,Cyclical,Europe,Netherlands,10
+NIPSHG-PILKING,PILKINGTON GROUP Ltd,Cyclical,Europe,United Kingdom,10
+NOVART,Novartis AG,Non Cyclical,Europe,Switzerland,10
+NXT,Next plc,Cyclical,Europe,United Kingdom,17
+PAUTO,Porsche Automobil Hldg SE,Non Cyclical,Europe,Germany,8
+PERNOD,Pernod Ricard,Non Cyclical,Europe,France,8
+PEUGOT,Peugeot SA,Non Cyclical,Europe,France,14
 PEUGOT-BanqPsa,Bqe Psa Fin,Financials,Europe,France,10
-PIRELN,Pirelli & C SpA,Consumer Goods,Europe,Italy,9
+PIRELN,Pirelli & C SpA,Non Cyclical,Europe,Italy,9
 PRUFIN,Prudential PLC,Financials,Europe,United Kingdom,6
-PSON,Pearson plc,Consumer Services,Europe,United Kingdom,17
-PUBFP,Publicis Groupe SA,Consumer Services,Europe,France,9
-RAGAG-EVODEG,Evonik Degussa GmbH,Basic Materials,Europe,Germany,10
-RBOSCH,Robert Bosch GmBH,Consumer Goods,Europe,Germany,10
+PSON,Pearson plc,Cyclical,Europe,United Kingdom,17
+PUBFP,Publicis Groupe SA,Cyclical,Europe,France,9
+RAGAG-EVODEG,Evonik Degussa GmbH,Cyclical,Europe,Germany,10
+RBOSCH,Robert Bosch GmBH,Non Cyclical,Europe,Germany,10
 RDMB,Rodamco Europe NV,Financials,Europe,Netherlands,10
-RDNA-ShellPet,SHELL Pete N V,Oil & Gas,Europe,Netherlands,10
-RDNA-ShellPetLt,Shell Pete Co Ltd,Oil & Gas,Europe,United Kingdom,10
-RDSPLC,ROYAL DUTCH SHELL PLC,Oil & Gas,Europe,United Kingdom,10
-RECSA,Red Electrica Corporacion S A,Utilities,Europe,Spain,10
-RENAUL,Renault,Consumer Goods,Europe,France,11
-RENAUL-RCIBanq,RCI Bqe,Consumer Goods,Europe,France,10
-RENTPL,Rentokil Initial 1927 Plc,Industrials,Europe,United Kingdom,10
-RHEINM-Rheinmet,Rheinmetall AG,Consumer Goods,Europe,Germany,10
-RIOLN,Rio Tinto plc,Basic Materials,Europe,United Kingdom,10
-RNK,Rank Gp PLC,Consumer Services,Europe,United Kingdom,10
-RNTKIL,RENTOKIL INITIAL PLC,Industrials,Europe,United Kingdom,9
-ROLLS,Rolls Royce plc,Industrials,Europe,United Kingdom,10
-ROSW,Roche Hldg Ltd,Health Care,Europe,Switzerland,10
+RDNA-ShellPet,SHELL Pete N V,Cyclical,Europe,Netherlands,10
+RDNA-ShellPetLt,Shell Pete Co Ltd,Cyclical,Europe,United Kingdom,10
+RDSPLC,ROYAL DUTCH SHELL PLC,Cyclical,Europe,United Kingdom,10
+RECSA,Red Electrica Corporacion S A,Non Cyclical,Europe,Spain,10
+RENAUL,Renault,Non Cyclical,Europe,France,11
+RENAUL-RCIBanq,RCI Bqe,Non Cyclical,Europe,France,10
+RENTPL,Rentokil Initial 1927 Plc,Cyclical,Europe,United Kingdom,10
+RHEINM-Rheinmet,Rheinmetall AG,Non Cyclical,Europe,Germany,10
+RIOLN,Rio Tinto plc,Cyclical,Europe,United Kingdom,10
+RNK,Rank Gp PLC,Cyclical,Europe,United Kingdom,10
+RNTKIL,RENTOKIL INITIAL PLC,Cyclical,Europe,United Kingdom,9
+ROLLS,Rolls Royce plc,Cyclical,Europe,United Kingdom,10
+ROSW,Roche Hldg Ltd,Non Cyclical,Europe,Switzerland,10
 RSA-InsPLC,Royal & Sun Alliance Ins PLC,Financials,Europe,United Kingdom,10
 RSAIG,RSA Ins GROUP PLC,Financials,Europe,United Kingdom,17
-RXLDEV,REXEL Dev SAS,Industrials,Europe,France,10
+RXLDEV,REXEL Dev SAS,Cyclical,Europe,France,10
 SANPAO,Intesa Sanpaolo SpA,Financials,Europe,Italy,9
 SANTNDR,Bco SANTANDER SA,Financials,Europe,Spain,7
 SANUK,SANTANDER UK PLC,Financials,Europe,United Kingdom,7
-SAPSJ-SGM,Sappi Papier Hldg GmBH,Basic Materials,Europe,Austria,12
-SBRY,J Sainsbury PLC,Consumer Services,Europe,United Kingdom,10
-SCACAP,Svenska Cellulosa AB SCA,Consumer Goods,Europe,Sweden,17
-SCANIA,SCANIA AB,Industrials,Europe,Sweden,14
-SCMNVX,Swisscom AG,Telecommunications,Europe,Switzerland,6
+SAPSJ-SGM,Sappi Papier Hldg GmBH,Cyclical,Europe,Austria,12
+SBRY,J Sainsbury PLC,Cyclical,Europe,United Kingdom,10
+SCACAP,Svenska Cellulosa AB SCA,Non Cyclical,Europe,Sweden,17
+SCANIA,SCANIA AB,Cyclical,Europe,Sweden,14
+SCMNVX,Swisscom AG,Cyclical,Europe,Switzerland,6
 SCORS,SCOR SE,Financials,Europe,France,5
-SCOTPO-Ukplc,Scottish Pwr UK PLC,Utilities,Europe,United Kingdom,10
+SCOTPO-Ukplc,Scottish Pwr UK PLC,Non Cyclical,Europe,United Kingdom,10
 SEB,Skandinaviska Enskilda Banken AB,Financials,Europe,Sweden,5
-SECURI,Securitas AB,Industrials,Europe,Sweden,9
-SESG,SES,Telecommunications,Europe,Luxembourg,10
-SGCLN,Stagecoach Gp Plc,Consumer Services,Europe,United Kingdom,10
+SECURI,Securitas AB,Cyclical,Europe,Sweden,9
+SESG,SES,Cyclical,Europe,Luxembourg,10
+SGCLN,Stagecoach Gp Plc,Cyclical,Europe,United Kingdom,10
 SGRO,SEGRO PLC,Financials,Europe,United Kingdom,10
-SIEM,Siemens AG,Industrials,Europe,Germany,17
-SKF,AB SKF,Industrials,Europe,Sweden,10
-SLTRW-Kelda,KELDA GROUP Ltd,Utilities,Europe,United Kingdom,17
-SMIN,Smiths Gp Plc,Industrials,Europe,United Kingdom,10
+SIEM,Siemens AG,Cyclical,Europe,Germany,17
+SKF,AB SKF,Cyclical,Europe,Sweden,10
+SLTRW-Kelda,KELDA GROUP Ltd,Non Cyclical,Europe,United Kingdom,17
+SMIN,Smiths Gp Plc,Cyclical,Europe,United Kingdom,10
 SOCGEN,Societe Generale,Financials,Europe,France,6
 SOLL,Soc Of Lloyd S,Financials,Europe,United Kingdom,10
-SOLVAY,Solvay SA,Basic Materials,Europe,Belgium,9
+SOLVAY,Solvay SA,Cyclical,Europe,Belgium,9
 STAN,STANDARD CHARTERED PLC,Financials,Europe,United Kingdom,6
 STAN-Bank,Std Chartered Bk,Financials,Europe,United Kingdom,5
 STB,Storebrand ASA,Financials,Europe,Norway,10
-STGOBN,Cie de St Gobain,Industrials,Europe,France,10
+STGOBN,Cie de St Gobain,Cyclical,Europe,France,10
 STLIFE-LifeAss,STANDARD LIFE Assurn Ltd,Financials,Europe,United Kingdom,10
-STM,Stmicroelectronics N V,Technology,Europe,Netherlands,1
-STORA,Stora Enso CORP,Basic Materials,Europe,Finland,10
+STM,Stmicroelectronics N V,Cyclical,Europe,Netherlands,1
+STORA,Stora Enso CORP,Cyclical,Europe,Finland,10
 SVSKHB,Svenska Handelsbanken AB,Financials,Europe,Sweden,5
 SWEDBK,Swedbank AB,Financials,Europe,Sweden,5
-SWEMAT,Swedish Match AB,Consumer Goods,Europe,Sweden,17
+SWEMAT,Swedish Match AB,Non Cyclical,Europe,Sweden,17
 SWLHLD,Swiss Life Hldg Ltd,Financials,Europe,Switzerland,10
 SWREL,Swiss Reins Co Ltd,Financials,Europe,Switzerland,10
 SWSL,Swiss Life Ltd,Financials,Europe,Switzerland,10
-SXLTD,SIX CONTINENTS LTD,Consumer Services,Europe,United Kingdom,10
-SYNNVX,Syngenta AG,Basic Materials,Europe,Switzerland,7
-TATAGP-CORUSLTD,CORUS GROUP Ltd,Basic Materials,Europe,United Kingdom,17
-TATELN,Tate & Lyle PLC,Consumer Goods,Europe,United Kingdom,14
-TELDAN,TDC A/S,Telecommunications,Europe,Denmark,17
-TELEFO,Telefonica S A,Telecommunications,Europe,Spain,17
-TELNOR,Telenor ASA,Telecommunications,Europe,Norway,7
-TFIFP,Societe Television Francaise 1,Consumer Services,Europe,France,9
-TIIMN,Telecom Italia SpA,Telecommunications,Europe,Italy,12
-TKA,Telekom Austria AG,Telecommunications,Europe,Austria,14
-TKAGR,ThyssenKrupp AG,Industrials,Europe,Germany,14
-TMSNRP-TRGL,THOMSON REUTERS GROUP Ltd,Consumer Services,Europe,United Kingdom,10
-TNET,Telenet Group Hldg Nv,Consumer Services,Europe,Belgium,13
-TOTALN,Total SA,Oil & Gas,Europe,France,10
-TSCO,Tesco PLC,Consumer Services,Europe,United Kingdom,17
-TWPLC,TAYLOR WIMPEY PLC,Consumer Goods,Europe,United Kingdom,10
-TYECOG,Tyco Electrs Group SA,Industrials,Europe,Luxembourg,10
+SXLTD,SIX CONTINENTS LTD,Cyclical,Europe,United Kingdom,10
+SYNNVX,Syngenta AG,Cyclical,Europe,Switzerland,7
+TATAGP-CORUSLTD,CORUS GROUP Ltd,Cyclical,Europe,United Kingdom,17
+TATELN,Tate & Lyle PLC,Non Cyclical,Europe,United Kingdom,14
+TELDAN,TDC A/S,Cyclical,Europe,Denmark,17
+TELEFO,Telefonica S A,Cyclical,Europe,Spain,17
+TELNOR,Telenor ASA,Cyclical,Europe,Norway,7
+TFIFP,Societe Television Francaise 1,Cyclical,Europe,France,9
+TIIMN,Telecom Italia SpA,Cyclical,Europe,Italy,12
+TKA,Telekom Austria AG,Cyclical,Europe,Austria,14
+TKAGR,ThyssenKrupp AG,Cyclical,Europe,Germany,14
+TMSNRP-TRGL,THOMSON REUTERS GROUP Ltd,Cyclical,Europe,United Kingdom,10
+TNET,Telenet Group Hldg Nv,Cyclical,Europe,Belgium,13
+TOTALN,Total SA,Cyclical,Europe,France,10
+TSCO,Tesco PLC,Cyclical,Europe,United Kingdom,17
+TWPLC,TAYLOR WIMPEY PLC,Non Cyclical,Europe,United Kingdom,10
+TYECOG,Tyco Electrs Group SA,Cyclical,Europe,Luxembourg,10
 UBS,UBS AG,Financials,Europe,Switzerland,5
-UCBAG,UniCredit Bk AG,Financials,Europe,Germany,19
-ULVR,Unilever N V,Consumer Goods,Europe,Netherlands,17
-UPMKYM,UPM Kymmene CORP,Basic Materials,Europe,Finland,10
+ULVR,Unilever N V,Non Cyclical,Europe,Netherlands,17
+UPMKYM,UPM Kymmene CORP,Cyclical,Europe,Finland,10
 USPA,UniCredit SpA,Financials,Europe,Italy,10
-UU,Utd Utils plc,Utilities,Europe,United Kingdom,1
-VEOLIA,Veolia Environnement,Utilities,Europe,France,7
-VINCI,Vinci,Industrials,Europe,France,10
-VIRFIN,VIRGIN MEDIA Fin PLC,Telecommunications,Europe,United Kingdom,13
-VIVNDI,Vivendi,Telecommunications,Europe,France,9
-VLOF,Valeo,Consumer Goods,Europe,France,10
-VLVY,AB Volvo,Industrials,Europe,Sweden,7
-VLVY-Treasury,Volvo Treas AB,Industrials,Europe,Sweden,7
-VOD,Vodafone Gp PLC,Telecommunications,Europe,United Kingdom,10
-VW,Volkswagen AG,Consumer Goods,Europe,Germany,6
-WEINBG,Wienerberger Ag,Industrials,Europe,Austria,9
+UU,Utd Utils plc,Non Cyclical,Europe,United Kingdom,1
+VEOLIA,Veolia Environnement,Non Cyclical,Europe,France,7
+VINCI,Vinci,Cyclical,Europe,France,10
+VIRFIN,VIRGIN MEDIA Fin PLC,Cyclical,Europe,United Kingdom,13
+VIVNDI,Vivendi,Cyclical,Europe,France,9
+VLOF,Valeo,Non Cyclical,Europe,France,10
+VLVY,AB Volvo,Cyclical,Europe,Sweden,7
+VLVY-Treasury,Volvo Treas AB,Cyclical,Europe,Sweden,7
+VOD,Vodafone Gp PLC,Cyclical,Europe,United Kingdom,10
+VW,Volkswagen AG,Non Cyclical,Europe,Germany,6
+WEINBG,Wienerberger Ag,Cyclical,Europe,Austria,9
 WENL,WENDEL,Financials,Europe,France,10
-WOLKLU,Wolters Kluwer N V,Consumer Services,Europe,Netherlands,9
-WPPGRP-2005,WPP 2005 Ltd,Consumer Services,Europe,United Kingdom,17
-YORPOW,Yorkshire Pwr Gp Ltd,Utilities,Europe,United Kingdom,10
+WOLKLU,Wolters Kluwer N V,Cyclical,Europe,Netherlands,9
+WPPGRP-2005,WPP 2005 Ltd,Cyclical,Europe,United Kingdom,17
+YORPOW,Yorkshire Pwr Gp Ltd,Non Cyclical,Europe,United Kingdom,10
 ZINCO,Zurich Ins Co Ltd,Financials,Europe,Switzerland,1
