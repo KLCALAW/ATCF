@@ -62,6 +62,132 @@ def calculate_proxy_intersection_method_average(ticker, metadata, communities, t
 
     return proxy
 
+# function to calculate proxy using the CSRA community method by adding another coefficient for the community
+def calculate_proxy_coeff_csra_community_extra_coeff(prices_data, communities, metadata, index_data, liquid_bucket, date, use_index = False):
+    if not isinstance(communities[0], list):
+        communities = [communities]
+    coefficients = {}
+    metadata = metadata.set_index('Ticker')
+    # prepare the data for the date
+    prices_data = prices_data.loc[date,:]
+
+    # Extract spread from index data for the date
+    index_data = index_data[index_data['Date'] == date]
+    index_spread = index_data['ConvSpread'].values[0]
+    # print(f"Index spread for the date {date} is {index_spread}")
+
+    # print(f"Liquid bucket spread for the date {date} is {liquid_bucket_spread}")
+
+    if use_index:
+        global_spread = index_spread
+    else:
+        # prepare the liquid bucket data for the date
+        liquid_bucket_sector = liquid_bucket['Sector']
+        liquid_bucket_country = liquid_bucket['Country']
+        liquid_bucket_ratings = liquid_bucket['Rating']
+        liquid_bucket_tickers = metadata[(metadata['Sector'] == liquid_bucket_sector) & (metadata['Country'] == liquid_bucket_country) & (metadata['AverageRating'] == liquid_bucket_ratings)].index.to_list()
+        liquid_bucket_spread = prices_data[liquid_bucket_tickers].mean(axis=0)
+        global_spread = liquid_bucket_spread
+
+    all_tickers = prices_data.columns.to_list()
+
+    # prepare the data for the community
+
+    sectors= metadata['Sector'].unique().tolist()
+
+    countries = metadata['Country'].unique().tolist()
+
+    ratings= metadata['AverageRating'].unique().tolist()
+
+    # remove the liquid bucket from the community
+    if not use_index:
+        if liquid_bucket_sector in sectors:
+            sectors.remove(liquid_bucket_sector)
+        if liquid_bucket_country in countries:
+            countries.remove(liquid_bucket_country)
+        if liquid_bucket_ratings in ratings:
+            ratings.remove(liquid_bucket_ratings)
+
+    prices_data = prices_data.T.to_numpy()
+    prices_data = prices_data.reshape(-1, 1)
+
+    prices_data_log = np.log(prices_data)
+
+    if len(communities) > 1:
+        mask = np.zeros((prices_data[0], len(sectors) + len(countries) + len(ratings) + len(communities)))
+    else:
+        mask = np.zeros((prices_data[0], len(sectors) + len(countries) + len(ratings)))
+
+    for i in range(prices_data.shape[0]):
+        if not use_index:
+            if metadata.loc[all_tickers[i], 'Sector'] in sectors:
+                j = sectors.index(metadata.loc[all_tickers[i], 'Sector'])
+                mask[i, j] = 1
+            if metadata.loc[all_tickers[i], 'Country'] in countries:
+                j = len(sectors) + countries.index(metadata.loc[all_tickers[i], 'Country'])
+                mask[i, j] = 1
+            if metadata.loc[all_tickers[i], 'AverageRating'] in ratings:
+                j = len(sectors) + len(countries) + ratings.index(metadata.loc[all_tickers[i], 'AverageRating'])
+                mask[i, j] = 1
+            if len(communities) > 1:
+                for community_number, community in enumerate(communities):
+                    if all_tickers[i] in community:
+                        j = len(sectors) + len(countries) + len(ratings) + community_number
+                        mask[i, j] = 1
+
+        else:    
+            j = sectors.index(metadata.loc[all_tickers[i], 'Sector'])
+            mask[i, j] = 1
+            k = len(sectors) + countries.index(metadata.loc[all_tickers[i], 'Country'])
+            mask[i, k] = 1
+            l = len(sectors) + len(countries) + ratings.index(metadata.loc[all_tickers[i], 'AverageRating'])
+
+    # beta_0
+    beta_0 = np.tile(np.log(global_spread), (prices_data.shape[1], 1))
+
+    # Define optimization variables
+    if len(communities) > 1:
+        betas = cp.Variable(shape=(len(sectors) + len(countries) + len(ratings) + len(communities), 1))
+    else:
+        betas = cp.Variable(shape=(len(sectors) + len(countries) + len(ratings), 1))
+
+    beta_contributions = mask @ betas
+
+    regularization = 1e-4 * cp.norm(betas, 2) #A small value like 1e-41e-4 assumes that the residual error ∥y−Xβ∥22∥y−Xβ∥22​ is numerically dominant and regularization is used primarily to stabilize the solution.
+    objective = cp.Minimize(cp.norm(prices_data_log - beta_0 - beta_contributions, "fro")**2 + regularization)
+
+    
+    # Define the objective function
+    #objective = cp.Minimize(cp.norm(prices_data_log - beta_0 -  beta_contributions, "fro")**2)
+
+    
+    # Solve the optimization problem
+    problem = cp.Problem(objective)
+    problem.solve()
+
+    # store the coefficients
+    sector_betas = betas.value[0:len(sectors)]
+    country_betas = betas.value[len(sectors): len(sectors) + len(countries)]
+    rating_betas = betas.value[len(sectors) + len(countries):]
+    if len(communities) > 1:
+        community_betas = betas.value[len(sectors) + len(countries) + len(ratings):]
+        community_df = pd.DataFrame({'Name': [f'Community_{i+1}' for i in range(len(communities))], 'Coefficient': community_betas.flatten(), 'Type': 'Community'})
+
+    sectors_df = pd.DataFrame({'Name': sectors, 'Coefficient': sector_betas.flatten(), 'Type': 'Sector'},)
+    countries_df = pd.DataFrame({'Name': countries, 'Coefficient': country_betas.flatten(), 'Type': 'Country'})
+    ratings_df = pd.DataFrame({'Name': ratings, 'Coefficient': rating_betas.flatten(), 'Type': 'Rating'})
+
+    # Combine DataFrames
+    if len(communities) > 1:
+        coefficients_df = pd.concat([sectors_df, countries_df, ratings_df, community_df], ignore_index=True)
+    else:
+        coefficients_df = pd.concat([sectors_df, countries_df, ratings_df], ignore_index=True)
+
+    coefficients_df = coefficients_df.set_index('Name')
+    coefficients[f'community_{community_number+1}'] = coefficients_df
+     
+    return coefficients
+
 # function to calculate proxy using the intersection method
 def calculate_coefficients_intersection_method(prices_data, communities, metadata, index_data, liquid_bucket, date, use_index = False):
     if not isinstance(communities[0], list):
@@ -221,19 +347,18 @@ def calculate_proxy_coeff_csra_community(prices_data, communities, metadata, ind
                     j = sectors_community.index(metadata_community.loc[community[i], 'Sector'])
                     mask[i, j] = 1
                 if metadata_community.loc[community[i], 'Country'] in countries_community:
-                    j = len(sectors_community) + countries_community.index(metadata_community.loc[community[i], 'Country']) - 1
+                    j = len(sectors_community) + countries_community.index(metadata_community.loc[community[i], 'Country'])
                     mask[i, j] = 1
                 if metadata_community.loc[community[i], 'AverageRating'] in ratings_community:
-                    j = len(sectors_community) + len(countries_community) + ratings_community.index(metadata_community.loc[community[i], 'AverageRating']) - 1
+                    j = len(sectors_community) + len(countries_community) + ratings_community.index(metadata_community.loc[community[i], 'AverageRating'])
                     mask[i, j] = 1
-
 
             else:    
                 j = sectors_community.index(metadata_community.loc[community[i], 'Sector'])
                 mask[i, j] = 1
-                k = len(sectors_community) + countries_community.index(metadata_community.loc[community[i], 'Country'])  - 1
+                k = len(sectors_community) + countries_community.index(metadata_community.loc[community[i], 'Country'])
                 mask[i, k] = 1
-                l = len(sectors_community) + len(countries_community) + ratings_community.index(metadata_community.loc[community[i], 'AverageRating']) - 1
+                l = len(sectors_community) + len(countries_community) + ratings_community.index(metadata_community.loc[community[i], 'AverageRating'])
 
         # beta_0
         beta_0 = np.tile(np.log(global_spread), (prices_data_community.shape[1], 1))
