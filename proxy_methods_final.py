@@ -183,10 +183,7 @@ def calculate_proxy_coeff_csra_community_extra_coeff(prices_data, communities, m
     else:
         coefficients_df = pd.concat([sectors_df, countries_df, ratings_df], ignore_index=True)
 
-    coefficients_df = coefficients_df.set_index('Name')
-    coefficients[f'community_{community_number+1}'] = coefficients_df
-     
-    return coefficients
+    return coefficients_df
 
 # function to calculate proxy using the intersection method
 def calculate_coefficients_intersection_method(prices_data, communities, metadata, index_data, liquid_bucket, date, use_index = False):
@@ -269,6 +266,129 @@ def calculate_coefficients_intersection_method(prices_data, communities, metadat
     
     return coefficients
 
+def calculate_proxy_coeff_csra_community_product(prices_data, communities, metadata, index_data, liquid_bucket, date, use_index = False):
+    if not isinstance(communities[0], list):
+        communities = [communities]
+    coefficients = {}
+    metadata = metadata.set_index('Ticker')
+    # prepare the data for the date
+    prices_data = prices_data.loc[date,:]
+
+    # Extract spread from index data for the date
+    index_data = index_data[index_data['Date'] == date]
+    index_spread = index_data['ConvSpread'].values[0]
+    # print(f"Index spread for the date {date} is {index_spread}")
+
+    # print(f"Liquid bucket spread for the date {date} is {liquid_bucket_spread}")
+
+    if use_index:
+        global_spread = index_spread
+    else:
+        # prepare the liquid bucket data for the date
+        liquid_bucket_sector = liquid_bucket['Sector']
+        liquid_bucket_country = liquid_bucket['Country']
+        liquid_bucket_ratings = liquid_bucket['Rating']
+        liquid_bucket_tickers = metadata[(metadata['Sector'] == liquid_bucket_sector) & (metadata['Country'] == liquid_bucket_country) & (metadata['AverageRating'] == liquid_bucket_ratings)].index.to_list()
+        liquid_bucket_spread = prices_data[liquid_bucket_tickers].mean(axis=0)
+        global_spread = liquid_bucket_spread
+    
+    for community_number, community in enumerate(communities):
+
+        # prepare the data for the community
+        prices_data_community = prices_data[community]
+        metadata_community = metadata.loc[community,:]
+
+        sectors_community = metadata_community.loc[community, 'Sector'].unique().tolist()
+
+        countries_community = metadata_community.loc[community, 'Country'].unique().tolist()
+
+        ratings_community = metadata_community.loc[community, 'AverageRating'].unique().tolist()
+
+        # remove the liquid bucket from the community
+        if not use_index:
+            if liquid_bucket_sector in sectors_community:
+                sectors_community.remove(liquid_bucket_sector)
+            if liquid_bucket_country in countries_community:
+                countries_community.remove(liquid_bucket_country)
+            if liquid_bucket_ratings in ratings_community:
+                ratings_community.remove(liquid_bucket_ratings)
+
+        prices_data_community = prices_data_community.T.to_numpy()
+        prices_data_community = prices_data_community.reshape(-1, 1)
+
+        # min_val = prices_data_community.min()
+        # max_val = prices_data_community.max()
+
+        # # Min-Max Normalization
+        # prices_data_community_normalized = (prices_data_community - min_val) / (max_val - min_val)
+
+        # # Add a small constant to avoid log(0)
+        # epsilon = 1e-8  # Small positive constant
+        # prices_data_community_normalized += epsilon
+
+        # beta_0
+        beta_0 = np.tile(np.log(global_spread), (prices_data_community.shape[1], 1))
+
+        # Define optimization variables
+        sector_coefficients = cp.Variable(shape=(len(sectors_community)))
+        country_coefficients = cp.Variable(shape=(len(countries_community)))
+        rating_coefficients = cp.Variable(shape=(len(ratings_community)))
+
+        sector_array = cp.ones((prices_data_community.shape[1], 1))
+        country_array = cp.ones((prices_data_community.shape[1], 1))
+        rating_array = cp.ones((prices_data_community.shape[1], 1))
+
+        for i in range(prices_data_community.shape[0]):
+            if not use_index:
+                if metadata_community.loc[community[i], 'Sector'] in sectors_community:
+                    j = sectors_community.index(metadata_community.loc[community[i], 'Sector'])
+                    sector_array[i] = sector_coefficients[j]
+
+                if metadata_community.loc[community[i], 'Country'] in countries_community:
+                    j = countries_community.index(metadata_community.loc[community[i], 'Country'])
+                    country_array[i] = country_coefficients[j]
+
+                if metadata_community.loc[community[i], 'AverageRating'] in ratings_community:
+                    j = ratings_community.index(metadata_community.loc[community[i], 'AverageRating'])
+                    rating_array[i] = rating_coefficients[j]
+
+            else:    
+                j = sectors_community.index(metadata_community.loc[community[i], 'Sector'])
+                sector_array[i] = sector_coefficients[j]
+
+                j = countries_community.index(metadata_community.loc[community[i], 'Country'])
+                country_array[i] = country_coefficients[j]
+
+                j = ratings_community.index(metadata_community.loc[community[i], 'AverageRating'])
+                rating_array[i] = rating_coefficients[j]
+
+        product_contribution = sector_array * country_array * rating_array
+
+        regularization = 1e-4 * cp.norm(sector_coefficients + rating_coefficients + country_coefficients, 2) #A small value like 1e-41e-4 assumes that the residual error ∥y−Xβ∥22∥y−Xβ∥22​ is numerically dominant and regularization is used primarily to stabilize the solution.
+        objective = cp.Minimize(cp.mean((prices_data - product_contribution) / prices_data) + regularization)
+
+        # Define the objective function
+        #objective = cp.Minimize(cp.norm(prices_data_community_log - beta_0 -  beta_contributions, "fro")**2)
+
+        # Solve the optimization problem
+        problem = cp.Problem(objective)
+        problem.solve()
+
+        # store the coefficients
+        sector_betas = sector_coefficients.value
+        country_betas = country_coefficients.value
+        rating_betas = rating_coefficients.value
+
+        sectors_df = pd.DataFrame({'Name': sectors_community, 'Coefficient': sector_betas.flatten(), 'Type': 'Sector'},)
+        countries_df = pd.DataFrame({'Name': countries_community, 'Coefficient': country_betas.flatten(), 'Type': 'Country'})
+        ratings_df = pd.DataFrame({'Name': ratings_community, 'Coefficient': rating_betas.flatten(), 'Type': 'Rating'}) 
+
+        # Combine DataFrames
+        coefficients_df = pd.concat([sectors_df, countries_df, ratings_df], ignore_index=True)
+        coefficients_df = coefficients_df.set_index('Name')
+        coefficients[f'community_{community_number+1}'] = coefficients_df
+    
+    return coefficients
 
 # function to calculate proxy using the CSRA community method
 def calculate_proxy_coeff_csra_community(prices_data, communities, metadata, index_data, liquid_bucket, date, use_index = False):
@@ -451,7 +571,125 @@ def calculate_proxy_intersection_method(ticker, metadata, coefficients, ticker_c
 
     return proxy
 
+# function to calculate proxy using the CSRA method using extra coeffs
+def calculate_proxy_csra_community_extra_coeff(ticker, metadata, coefficients, ticker_community, communities, prices_data, index_data, liquid_bucket, date, use_index = False):
+    
+    if not isinstance(communities[0], list):
+        communities = [communities]
+
+    metadata = metadata.set_index('Ticker')
+    # prepare the data for the date
+    prices_data = prices_data.loc[date,:]
+
+    #Extract spread from index data for the date
+    index_data = index_data[index_data['Date'] == date]
+    index_spread = index_data['ConvSpread'].values[0]
+    # print(f"Index spread for the date {date} is {index_spread}")
+
+    # print(f"Liquid bucket spread for the date {date} is {liquid_bucket_spread}")
+
+    if use_index:
+        global_spread = np.log(index_spread)
+    else:
+        # Prepare the liquid bucket data for the date
+        liquid_bucket_sector = liquid_bucket['Sector']
+        liquid_bucket_country = liquid_bucket['Country']
+        liquid_bucket_ratings = liquid_bucket['Rating']
+
+        #Remove ticker from metadata so that it is not included in the liquid bucket tickers below
+        metadata_1 = metadata[metadata['Ticker'] != ticker]
+
+        liquid_bucket_tickers = metadata_1[(metadata_1['Sector'] == liquid_bucket_sector) & (metadata_1['Country'] == liquid_bucket_country) & (metadata_1['AverageRating'] == liquid_bucket_ratings)].index.to_list()
+        liquid_bucket_spread = prices_data[liquid_bucket_tickers].mean(axis=0)
+        global_spread = np.log(liquid_bucket_spread)
+
+    # get the coefficients for the sector, country and rating
+    #Check that the sector, country and rating for the ticker are in the coefficients dataframe. THEY WON'T BE IF THE TICKER COMES FROM SOME UNIDENTIFIED SECTOR, COUNTRY OR RATING 
+    if metadata.loc[ticker, 'Sector'] in coefficients.index:
+        sector_coefficient = coefficients.loc[metadata.loc[ticker, 'Sector'], 'Coefficient']
+    else:
+        sector_coefficient = 0
+    
+    if metadata.loc[ticker, 'Country'] in coefficients.index:
+        country_coefficient = coefficients.loc[metadata.loc[ticker, 'Country'], 'Coefficient']
+    else:
+        country_coefficient = 0
+
+    if metadata.loc[ticker, 'AverageRating'] in coefficients.index:
+        rating_coefficient = coefficients.loc[metadata.loc[ticker, 'AverageRating'], 'Coefficient']
+    else:
+        rating_coefficient = 0
+
+    if len(communities) > 1:
+        # get the coefficients for the community
+        community_coefficient = coefficients.loc[f'Community_{ticker_community}', 'Coefficient']
+
+    if len(communities) > 1:
+        proxy_log = sector_coefficient + country_coefficient + rating_coefficient + community_coefficient + global_spread
+    else:
+        proxy_log = sector_coefficient + country_coefficient + rating_coefficient + global_spread
+
+    proxy = np.exp(proxy_log)
+
+    return proxy
+
 #CSRA method -- Can be used for both community and non-community based methods
+
+def calculate_proxy_csra_community_product(ticker,  metadata, coefficients, ticker_community, prices_data, index_data, liquid_bucket, date, use_index = False):
+    # if there is only one community, then the ticker_community will be 1
+    if len(coefficients) == 1:
+        ticker_community = 1
+    
+    metadata = metadata.set_index('Ticker')
+    # prepare the data for the date
+    prices_data = prices_data.loc[date,:]
+
+    #Extract spread from index data for the date
+    index_data = index_data[index_data['Date'] == date]
+    index_spread = index_data['ConvSpread'].values[0]
+    # print(f"Index spread for the date {date} is {index_spread}")
+
+    # print(f"Liquid bucket spread for the date {date} is {liquid_bucket_spread}")
+
+    if use_index:
+        global_spread = index_spread
+    else:
+        # Prepare the liquid bucket data for the date
+        liquid_bucket_sector = liquid_bucket['Sector']
+        liquid_bucket_country = liquid_bucket['Country']
+        liquid_bucket_ratings = liquid_bucket['Rating']
+
+        #Remove ticker from metadata so that it is not included in the liquid bucket tickers below
+        metadata_1 = metadata[metadata['Ticker'] != ticker]
+
+        liquid_bucket_tickers = metadata_1[(metadata_1['Sector'] == liquid_bucket_sector) & (metadata_1['Country'] == liquid_bucket_country) & (metadata_1['AverageRating'] == liquid_bucket_ratings)].index.to_list()
+        liquid_bucket_spread = prices_data[liquid_bucket_tickers].mean(axis=0)
+        global_spread = liquid_bucket_spread
+
+    company_community = f'community_{ticker_community}'
+    coefficients_ticker_community = coefficients[company_community]
+
+    # get the coefficients for the sector, country and rating
+    #Check that the sector, country and rating for the ticker are in the coefficients dataframe. THEY WON'T BE IF THE TICKER COMES FROM SOME UNIDENTIFIED SECTOR, COUNTRY OR RATING 
+    if metadata.loc[ticker, 'Sector'] in coefficients_ticker_community.index:
+        sector_coefficient = coefficients_ticker_community.loc[metadata.loc[ticker, 'Sector'], 'Coefficient']
+    else:
+        sector_coefficient = 1
+    
+    if metadata.loc[ticker, 'Country'] in coefficients_ticker_community.index:
+        country_coefficient = coefficients_ticker_community.loc[metadata.loc[ticker, 'Country'], 'Coefficient']
+    else:
+        country_coefficient = 1
+
+    if metadata.loc[ticker, 'AverageRating'] in coefficients_ticker_community.index:
+        rating_coefficient = coefficients_ticker_community.loc[metadata.loc[ticker, 'AverageRating'], 'Coefficient']
+    else:
+        rating_coefficient = 1
+
+    proxy = sector_coefficient * country_coefficient * rating_coefficient * global_spread
+
+    return proxy
+
 
 def calculate_proxy_csra_community(ticker,  metadata, coefficients, ticker_community, prices_data, index_data, liquid_bucket, date, use_index = False):
     # if there is only one community, then the ticker_community will be 1
@@ -787,6 +1025,273 @@ def calculate_proxy_time_series(
             )
             proxy_csra_community = calculate_proxy_csra_community(
                 ticker, metadata, coefficients_csra_community, ticker_community, prices_data_proxy_method, index_data, liquid_bucket, date, use_index=True
+            )
+            #except Exception as e:
+                #print(f"Error calculating CSRA COMMUNITY proxy for {ticker} on {date}: {e}")
+            
+            # Append results for this date
+            results.append({
+                "Ticker": ticker,
+                "Date": date,
+                "Actual_Spread": actual_spread,
+                "Proxy_Intersection": proxy_intersection,
+                "Proxy_Intersection_Community": proxy_intersection_community,
+                "Proxy_CSRA": proxy_csra,
+                "Proxy_CSRA_Community": proxy_csra_community,
+            })
+
+            #except Exception as e:
+                #print(f"Error calculating proxies for {ticker} on {date}: {e}")
+        
+        progress_bar(ticker_index / len(tickers))  #progress bar for each ticker
+    
+    clear_progress_bar()
+        # Convert results to a DataFrame
+    return pd.DataFrame(results)
+
+
+def calculate_proxy_time_series_product(
+    tickers, metadata, company_communities, prices_data, index_data, dates
+):
+    """
+    Calculates the time series of proxy values for the specified tickers using the different proxy methods. 
+    Outputs a final DataFrame with the actual spread, proxy spread using intersection method, proxy spread using CSRA method, and proxy spread using community methods.
+
+    Parameters:
+    - ticker: str, the ticker for which to calculate proxies.
+    - metadata: pd.DataFrame, metadata including the ticker.
+    - company_communities: list of lists, each inner list is a community containing tickers.
+    - prices_data: pd.DataFrame, price data with tickers as columns.
+    - index_data: additional index-related data.
+    - date_range: iterable of dates.
+
+    Returns:
+    - pd.DataFrame, time series of proxy values for the specified ticker.
+    """
+    results = []
+ 
+    for ticker_index,ticker in enumerate(tickers):
+        liquid_bucket = get_bucket(metadata, company_communities, ticker)
+        for date in dates:
+            #try:
+                # Ensure the date is in pandas datetime format
+            date = pd.to_datetime(date)
+            
+            # Locate the community for the ticker
+            ticker_community = None
+            for i, community in enumerate(company_communities):
+                if ticker in community:
+                    ticker_community = i + 1
+                    break
+            
+            # Get actual spread
+            actual_spread = prices_data.loc[date, ticker]
+            
+            # Remove the ticker from proxy calculations (effectively performing leave-one-out)
+            company_communities_proxy_method = copy.deepcopy(company_communities)
+            company_communities_proxy_method[ticker_community - 1].remove(ticker) # Remove the ticker from its community list
+            metadata_proxy_method = metadata[metadata['Ticker'] != ticker] # Remove the ticker from metadata
+            prices_data_proxy_method = prices_data.drop(columns=[ticker]) # Remove the ticker from prices data
+            
+            # Flatten communities
+            all_companies_proxy_method = [
+                company for community in company_communities_proxy_method for company in community
+            ]
+
+            # Calculate proxies
+            proxy_intersection = None
+            proxy_intersection_community = None
+            proxy_csra = None
+            proxy_csra_community = None
+
+            try:
+                #INTERSECTION METHOD (STANDARD VERSION FOR ALL COMPANIES)
+                #----------------------------------------------------------
+                # coefficients_intersection = calculate_coefficients_intersection_method(
+                #     prices_data_proxy_method, all_companies_proxy_method, metadata_proxy_method, index_data, liquid_bucket, date, use_index=True
+                # )
+                # proxy_intersection = calculate_proxy_intersection_method(
+                #     ticker, metadata, coefficients_intersection, ticker_community, prices_data_proxy_method, index_data, liquid_bucket, date, use_index=True
+                # )
+
+                proxy_intersection = calculate_proxy_intersection_method_average(ticker, metadata, all_companies_proxy_method, ticker_community, prices_data, index_data, liquid_bucket, date, use_index = True)
+
+            except Exception as e:
+                print(f"Error calculating proxy using intersection method for {ticker}: {e}")
+                proxy_intersection = None
+
+            try:
+                #INTERSECTION METHOD (COMMUNNITY VERSION)
+                #----------------------------------------------------------
+                # coefficients_intersection_community = calculate_coefficients_intersection_method(
+                #     prices_data_proxy_method, company_communities_proxy_method, metadata_proxy_method, index_data, liquid_bucket, date, use_index=True
+                # )
+                # proxy_intersection_community = calculate_proxy_intersection_method(
+                #     ticker, metadata, coefficients_intersection_community, ticker_community, prices_data_proxy_method, index_data, liquid_bucket, date, use_index=True
+                # )
+
+                proxy_intersection_community = calculate_proxy_intersection_method_average(ticker, metadata, company_communities_proxy_method, ticker_community, prices_data, index_data, liquid_bucket, date, use_index = True)
+
+            except Exception as e:
+                print(f"Error calculating proxy using intersection community method for {ticker}: {e}")
+                proxy_intersection_community = None
+
+            
+            try:
+                #CSRA METHOD (STANDARD VERSION FOR ALL COMPANIES)
+                #----------------------------------------------------------
+                coefficients_csra = calculate_proxy_coeff_csra_community_product(
+                    prices_data_proxy_method, all_companies_proxy_method, metadata_proxy_method, index_data, liquid_bucket, date, use_index=True
+                )
+                proxy_csra = calculate_proxy_csra_community_product(
+                    #Here we pass in 1 for the community number since the coefficients will be calculate using all the tickers, and will be stored in coefficients dictionary with key 'community_1'
+                    ticker, metadata, coefficients_csra, 1, prices_data_proxy_method, index_data, liquid_bucket, date, use_index=True
+            )
+            except Exception as e:
+                print(f"Error calculating CSRA NORMAL proxy for {ticker} on {date}: {e}")
+
+                #CSRA METHOD (COMMUNNITY VERSION)
+                #----------------------------------------------------------
+            #try:
+            coefficients_csra_community = calculate_proxy_coeff_csra_community_product(
+                prices_data_proxy_method, company_communities_proxy_method, metadata_proxy_method, index_data, liquid_bucket, date, use_index=True
+            )
+            proxy_csra_community = calculate_proxy_csra_community_product(
+                ticker, metadata, coefficients_csra_community, ticker_community, prices_data_proxy_method, index_data, liquid_bucket, date, use_index=True
+            )
+            #except Exception as e:
+                #print(f"Error calculating CSRA COMMUNITY proxy for {ticker} on {date}: {e}")
+            
+            # Append results for this date
+            results.append({
+                "Ticker": ticker,
+                "Date": date,
+                "Actual_Spread": actual_spread,
+                "Proxy_Intersection": proxy_intersection,
+                "Proxy_Intersection_Community": proxy_intersection_community,
+                "Proxy_CSRA": proxy_csra,
+                "Proxy_CSRA_Community": proxy_csra_community,
+            })
+
+            #except Exception as e:
+                #print(f"Error calculating proxies for {ticker} on {date}: {e}")
+        
+        progress_bar(ticker_index / len(tickers))  #progress bar for each ticker
+    
+    clear_progress_bar()
+        # Convert results to a DataFrame
+    return pd.DataFrame(results)
+
+
+
+def calculate_proxy_time_series_extra_coeff(
+    tickers, metadata, company_communities, prices_data, index_data, dates
+):
+    """
+    Calculates the time series of proxy values for the specified tickers using the different proxy methods. 
+    Outputs a final DataFrame with the actual spread, proxy spread using intersection method, proxy spread using CSRA method, and proxy spread using community methods.
+
+    Parameters:
+    - ticker: str, the ticker for which to calculate proxies.
+    - metadata: pd.DataFrame, metadata including the ticker.
+    - company_communities: list of lists, each inner list is a community containing tickers.
+    - prices_data: pd.DataFrame, price data with tickers as columns.
+    - index_data: additional index-related data.
+    - date_range: iterable of dates.
+
+    Returns:
+    - pd.DataFrame, time series of proxy values for the specified ticker.
+    """
+    results = []
+ 
+    for ticker_index,ticker in enumerate(tickers):
+        liquid_bucket = get_bucket(metadata, company_communities, ticker)
+        for date in dates:
+            #try:
+                # Ensure the date is in pandas datetime format
+            date = pd.to_datetime(date)
+            
+            # Locate the community for the ticker
+            ticker_community = None
+            for i, community in enumerate(company_communities):
+                if ticker in community:
+                    ticker_community = i + 1
+                    break
+            
+            # Get actual spread
+            actual_spread = prices_data.loc[date, ticker]
+            
+            # Remove the ticker from proxy calculations (effectively performing leave-one-out)
+            company_communities_proxy_method = copy.deepcopy(company_communities)
+            company_communities_proxy_method[ticker_community - 1].remove(ticker) # Remove the ticker from its community list
+            metadata_proxy_method = metadata[metadata['Ticker'] != ticker] # Remove the ticker from metadata
+            prices_data_proxy_method = prices_data.drop(columns=[ticker]) # Remove the ticker from prices data
+            
+            # Flatten communities
+            all_companies_proxy_method = [
+                company for community in company_communities_proxy_method for company in community
+            ]
+
+            # Calculate proxies
+            proxy_intersection = None
+            proxy_intersection_community = None
+            proxy_csra = None
+            proxy_csra_community = None
+
+            try:
+                #INTERSECTION METHOD (STANDARD VERSION FOR ALL COMPANIES)
+                #----------------------------------------------------------
+                # coefficients_intersection = calculate_coefficients_intersection_method(
+                #     prices_data_proxy_method, all_companies_proxy_method, metadata_proxy_method, index_data, liquid_bucket, date, use_index=True
+                # )
+                # proxy_intersection = calculate_proxy_intersection_method(
+                #     ticker, metadata, coefficients_intersection, ticker_community, prices_data_proxy_method, index_data, liquid_bucket, date, use_index=True
+                # )
+
+                proxy_intersection = calculate_proxy_intersection_method_average(ticker, metadata, all_companies_proxy_method, ticker_community, prices_data, index_data, liquid_bucket, date, use_index = True)
+
+            except Exception as e:
+                print(f"Error calculating proxy using intersection method for {ticker}: {e}")
+                proxy_intersection = None
+
+            try:
+                #INTERSECTION METHOD (COMMUNNITY VERSION)
+                #----------------------------------------------------------
+                # coefficients_intersection_community = calculate_coefficients_intersection_method(
+                #     prices_data_proxy_method, company_communities_proxy_method, metadata_proxy_method, index_data, liquid_bucket, date, use_index=True
+                # )
+                # proxy_intersection_community = calculate_proxy_intersection_method(
+                #     ticker, metadata, coefficients_intersection_community, ticker_community, prices_data_proxy_method, index_data, liquid_bucket, date, use_index=True
+                # )
+
+                proxy_intersection_community = calculate_proxy_intersection_method_average(ticker, metadata, company_communities_proxy_method, ticker_community, prices_data, index_data, liquid_bucket, date, use_index = True)
+
+            except Exception as e:
+                print(f"Error calculating proxy using intersection community method for {ticker}: {e}")
+                proxy_intersection_community = None
+
+            
+            try:
+                #CSRA METHOD (STANDARD VERSION FOR ALL COMPANIES)
+                #----------------------------------------------------------
+                coefficients_csra = calculate_proxy_coeff_csra_community_extra_coeff(
+                    prices_data_proxy_method, all_companies_proxy_method, metadata_proxy_method, index_data, liquid_bucket, date, use_index=True
+                )
+                proxy_csra = calculate_proxy_csra_community_extra_coeff(
+                    #Here we pass in 1 for the community number since the coefficients will be calculate using all the tickers, and will be stored in coefficients dictionary with key 'community_1'
+                    ticker, metadata, coefficients_csra, 1, all_companies_proxy_method, prices_data_proxy_method, index_data, liquid_bucket, date, use_index=True
+            )
+            except Exception as e:
+                print(f"Error calculating CSRA NORMAL proxy for {ticker} on {date}: {e}")
+
+                #CSRA METHOD (COMMUNNITY VERSION)
+                #----------------------------------------------------------
+            #try:
+            coefficients_csra_community = calculate_proxy_coeff_csra_community_extra_coeff(
+                prices_data_proxy_method, company_communities_proxy_method, metadata_proxy_method, index_data, liquid_bucket, date, use_index=True
+            )
+            proxy_csra_community = calculate_proxy_csra_community_extra_coeff(
+                ticker, metadata, coefficients_csra_community, ticker_community, company_communities_proxy_method, prices_data_proxy_method, index_data, liquid_bucket, date, use_index=True
             )
             #except Exception as e:
                 #print(f"Error calculating CSRA COMMUNITY proxy for {ticker} on {date}: {e}")
