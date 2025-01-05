@@ -10,13 +10,15 @@ import cvxpy as cp
 import copy
 import matplotlib.pyplot as plt
 
-def assign_ticker_to_community_bayes(ticker, metadata, company_communities):
+def assign_ticker_to_community_bayes(ticker, metadata, company_communities, criteria = ['AverageRating', 'Sector', 'Country']):
 
     metadata = metadata.set_index('Ticker')
 
-    ticker_sector = metadata.loc[ticker, 'Sector']
-    ticker_country = metadata.loc[ticker, 'Country']
-    ticker_rating = metadata.loc[ticker, 'AverageRating']
+    ticker_categories = {}
+
+    ticker_categories['Sector'] = metadata.loc[ticker, 'Sector']
+    ticker_categories['Country'] = metadata.loc[ticker, 'Country']
+    ticker_categories['AverageRating'] = metadata.loc[ticker, 'AverageRating']
 
     # remove the ticker from the metadata
     metadata = metadata.drop(ticker)
@@ -41,22 +43,87 @@ def assign_ticker_to_community_bayes(ticker, metadata, company_communities):
     community_prior = np.array([len(companies) / total_companies for companies in communities])
 
     # Calculate the likelihoods of the ticker
-    likelihood_ratings = np.zeros(number_of_communities)
-    for i in range(number_of_communities):
-        # count percentage of companies in the community with the same rating as the ticker
-        likelihood_ratings[i] = sum(metadata.loc[companies, 'AverageRating'] == ticker_rating for companies in communities[i]) / len(communities[i])
-    likelihood_sectors = np.zeros(number_of_communities)
+    if 'AverageRating' not in criteria:
+        likelihood_ratings = np.ones(number_of_communities)
+    else:
+        likelihood_ratings = np.zeros(number_of_communities)
+        for i in range(number_of_communities):
+            # count percentage of companies in the community with the same rating as the ticker
+            likelihood_ratings[i] = sum(metadata.loc[companies, 'AverageRating'] == ticker_categories['AverageRating'] for companies in communities[i]) / len(communities[i])
+        
+    if 'Sector' not in criteria:
+        likelihood_sectors = np.ones(number_of_communities)
+    else:
+        likelihood_sectors = np.zeros(number_of_communities)
+        for i in range(number_of_communities):
+            # count percentage of companies in the community with the same sector as the ticker
+            likelihood_sectors[i] = sum(metadata.loc[companies, 'Sector'] == ticker_categories['Sector'] for companies in communities[i]) / len(communities[i])
 
-    for i in range(number_of_communities):
-        # count percentage of companies in the community with the same sector as the ticker
-        likelihood_sectors[i] = sum(metadata.loc[companies, 'Sector'] == ticker_sector for companies in communities[i]) / len(communities[i])
-    
-    likelihood_countries = np.zeros(number_of_communities)
-    for i in range(number_of_communities):
-        # count percentage of companies in the community with the same country as the ticker
-        likelihood_countries[i] = sum(metadata.loc[companies, 'Country'] == ticker_country for companies in communities[i]) / len(communities[i])
+    if 'Country' not in criteria:
+        likelihood_countries = np.ones(number_of_communities)
+    else:   
+        likelihood_countries = np.zeros(number_of_communities)
+        for i in range(number_of_communities):
+            # count percentage of companies in the community with the same country as the ticker
+            likelihood_countries[i] = sum(metadata.loc[companies, 'Country'] == ticker_categories['Country'] for companies in communities[i]) / len(communities[i])
 
     community_posterior = community_prior * likelihood_ratings * likelihood_sectors * likelihood_countries
+
+    if sum(community_posterior) == 0:
+        # If the posterior probabilities are all zero, return the prior probabilities
+        return community_prior, np.argmax(community_prior) + 1
+    
+    # normalize the posterior probabilities
+    community_posterior = community_posterior / sum(community_posterior)
+
+    return community_posterior, np.argmax(community_posterior) + 1
+
+def assign_ticker_to_community_bayes_joint(ticker, metadata, company_communities, criteria = ['AverageRating', 'Sector', 'Country']):
+
+    metadata = metadata.set_index('Ticker')
+
+    ticker_categories = {}
+
+    ticker_categories['Sector'] = metadata.loc[ticker, 'Sector']
+    ticker_categories['Country'] = metadata.loc[ticker, 'Country']
+    ticker_categories['AverageRating'] = metadata.loc[ticker, 'AverageRating']
+
+    # remove the ticker from the metadata
+    metadata = metadata.drop(ticker)
+
+    communities = copy.deepcopy(company_communities)
+
+    # remove the ticker from the communities
+    for i, community in enumerate(communities):
+        if ticker in community:
+            communities[i].remove(ticker)
+            break
+
+    number_of_communities = len(communities)
+
+    if number_of_communities == 1:
+        return 1
+
+    # Calculate the total number of companies
+    total_companies = sum(len(companies) for companies in communities)
+
+    # Calculate prior probabilities for each community
+    community_prior = np.array([len(companies) / total_companies for companies in communities])
+
+    # calculate the likelihoods of the ticker for given criteria
+    likelihoods = np.zeros(number_of_communities)
+
+    for i in range(number_of_communities):
+        metadata_community = metadata.loc[communities[i]]
+        total_companies_community = len(metadata_community)
+        # filter the companies in the community based on all the criteria
+        for criterion in criteria:
+            metadata_community = metadata_community[metadata_community[criterion] == ticker_categories[criterion]]
+
+        # calculate the likelihood of the ticker in the community
+        likelihoods[i] = len(metadata_community) / total_companies_community
+
+    community_posterior = community_prior * likelihoods
 
     if sum(community_posterior) == 0:
         # If the posterior probabilities are all zero, return the prior probabilities
@@ -83,7 +150,7 @@ def get_original_community(ticker_proxy, company_communities):
             return i + 1
     return None  # Return None if the ticker is not found in any community
 
-def evaluate_placement_accuracy_bayes(metadata, company_communities, criteria=None):
+def evaluate_placement_accuracy_bayes(metadata, company_communities, criteria=['AverageRating', 'Sector', 'Country'], type = 'independent'):
     """
     Evaluate the accuracy of community placement based on naives bayes classifier.
 
@@ -100,8 +167,10 @@ def evaluate_placement_accuracy_bayes(metadata, company_communities, criteria=No
     for ticker_proxy in metadata['Ticker']:
         try:
             # Determine the predicted community
-            array, predicted_community = assign_ticker_to_community_bayes(ticker_proxy, metadata, company_communities)
-
+            if type == 'independent':
+                array, predicted_community = assign_ticker_to_community_bayes(ticker_proxy, metadata, company_communities, criteria = criteria)
+            else:
+                array, predicted_community = assign_ticker_to_community_bayes_joint(ticker_proxy, metadata, company_communities, criteria = criteria)
             # Get the original community
             original_community = get_original_community(ticker_proxy, company_communities)
 
@@ -150,16 +219,53 @@ if __name__ == "__main__":
     C_g = calculate_C_g(correlation_matrix, T, N)
     result_communities, company_communities, modularities = recursive_spectral_method(C_g, correlation_matrix, company_names, min_size=2, modularity_threshold=0.00001)
 
-    ticker = 'ZINCO'
+    # ticker = 'ZINCO'
 
-    # Find the original community
+    # # Find the original community
     
-    original_community = get_original_community(ticker, company_communities)
+    # original_community = get_original_community(ticker, company_communities)
 
-    print(original_community)
+    # print(original_community)
 
-    probabilites, assigned_community = assign_ticker_to_community_bayes(ticker, metadata, company_communities)
+    # probabilites, assigned_community = assign_ticker_to_community_bayes(ticker, metadata, company_communities, criteria = ['AverageRating', 'Sector', 'Country'])
 
-    print(probabilites, assigned_community)
+    # print(probabilites, assigned_community)
 
-    accuracy = evaluate_placement_accuracy_bayes(metadata, company_communities)
+    print('Single Criteria')
+    print('Rating Independent')
+    accuracy = evaluate_placement_accuracy_bayes(metadata, company_communities, criteria=['AverageRating'], type = 'independent')
+
+    print('Sector Independent')
+    accuracy = evaluate_placement_accuracy_bayes(metadata, company_communities, criteria=['Sector'], type = 'independent')
+
+    print('Country Independent')
+    accuracy = evaluate_placement_accuracy_bayes(metadata, company_communities, criteria=['Country'], type = 'independent')
+    print('-----------------------------------------')
+
+    print('Two Criteria')
+    print('Rating Sector Independent')
+    accuracy = evaluate_placement_accuracy_bayes(metadata, company_communities, criteria=['AverageRating', 'Sector'], type = 'independent')
+
+    print('Rating Sector Joint')
+    accuracy = evaluate_placement_accuracy_bayes(metadata, company_communities, criteria=['AverageRating', 'Sector'], type = 'joint')
+
+    print('Rating Country Independent')
+    accuracy = evaluate_placement_accuracy_bayes(metadata, company_communities, criteria=['AverageRating', 'Country'], type = 'independent')
+
+    print('Rating Country Joint')
+    accuracy = evaluate_placement_accuracy_bayes(metadata, company_communities, criteria=['AverageRating', 'Country'], type = 'joint')
+
+    print('Sector Country Independent')
+    accuracy = evaluate_placement_accuracy_bayes(metadata, company_communities, criteria=['Sector', 'Country'], type = 'independent')
+
+    print('Sector Country Joint')
+    accuracy = evaluate_placement_accuracy_bayes(metadata, company_communities, criteria=['Sector', 'Country'], type = 'joint')
+    print('-----------------------------------------')
+
+    print('Three Criteria')
+    print('Rating Sector Country Independent')
+    accuracy = evaluate_placement_accuracy_bayes(metadata, company_communities, criteria=['AverageRating', 'Sector', 'Country'], type = 'independent')
+
+    print('Rating Sector Country Joint')
+    accuracy = evaluate_placement_accuracy_bayes(metadata, company_communities, criteria=['AverageRating', 'Sector', 'Country'], type = 'joint')
+    
