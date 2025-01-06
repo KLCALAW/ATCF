@@ -17,19 +17,38 @@ def calculate_variance(ticker, proxy_time_series):
 
     # sort the time series by date
 
-    intersection_errors = proxy_time_series_ticker['Actual_Spread'] - proxy_time_series_ticker['Proxy_Intersection']
+    intersection_errors = (proxy_time_series_ticker['Actual_Spread'] - proxy_time_series_ticker['Proxy_Intersection'])/proxy_time_series_ticker['Actual_Spread']
     intersection_variance = np.var(intersection_errors)
 
-    intersection_communnity_errors = proxy_time_series_ticker['Actual_Spread'] - proxy_time_series_ticker['Proxy_Intersection_Community']
+    intersection_communnity_errors = (proxy_time_series_ticker['Actual_Spread'] - proxy_time_series_ticker['Proxy_Intersection_Community'])/proxy_time_series_ticker['Actual_Spread']
     intersection_community_variance = np.var(intersection_communnity_errors)
 
-    csra_errors = proxy_time_series_ticker['Actual_Spread'] - proxy_time_series_ticker['Proxy_CSRA']
+    csra_errors = (proxy_time_series_ticker['Actual_Spread'] - proxy_time_series_ticker['Proxy_CSRA'])/proxy_time_series_ticker['Actual_Spread']
     csra_variance = np.var(csra_errors)
 
-    csra_community_errors = proxy_time_series_ticker['Actual_Spread'] - proxy_time_series_ticker['Proxy_CSRA_Community']
+    csra_community_errors = (proxy_time_series_ticker['Actual_Spread'] - proxy_time_series_ticker['Proxy_CSRA_Community'])/proxy_time_series_ticker['Actual_Spread']
     csra_community_variance = np.var(csra_community_errors)
 
     return intersection_variance, intersection_community_variance, csra_variance, csra_community_variance
+
+def calculate_variance_aggregated(proxy_time_series):
+
+    # sort the time series by date
+
+    intersection_errors = (proxy_time_series['Actual_Spread'] - proxy_time_series['Proxy_Intersection'])/proxy_time_series['Actual_Spread']
+    intersection_variance = np.var(intersection_errors)
+
+    intersection_communnity_errors = (proxy_time_series['Actual_Spread'] - proxy_time_series['Proxy_Intersection_Community'])/proxy_time_series['Actual_Spread']
+    intersection_community_variance = np.var(intersection_communnity_errors)
+
+    csra_errors = (proxy_time_series['Actual_Spread'] - proxy_time_series['Proxy_CSRA'])/proxy_time_series['Actual_Spread']
+    csra_variance = np.var(csra_errors)
+
+    csra_community_errors = (proxy_time_series['Actual_Spread'] - proxy_time_series['Proxy_CSRA_Community'])/proxy_time_series['Actual_Spread']
+    csra_community_variance = np.var(csra_community_errors)
+
+    return intersection_variance, intersection_community_variance, csra_variance, csra_community_variance
+
 
 if __name__ == '__main__':
     proxy_time_series_final = pd.read_csv('data/proxy_time_series_final.csv')
