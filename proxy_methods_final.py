@@ -67,6 +67,9 @@ def calculate_proxy_coeff_csra_community_extra_coeff(prices_data, communities, m
     if not isinstance(communities[0], list):
         communities = [communities]
     coefficients = {}
+
+    all_tickers = metadata['Ticker'].to_list()  
+
     metadata = metadata.set_index('Ticker')
     # prepare the data for the date
     prices_data = prices_data.loc[date,:]
@@ -88,8 +91,6 @@ def calculate_proxy_coeff_csra_community_extra_coeff(prices_data, communities, m
         liquid_bucket_tickers = metadata[(metadata['Sector'] == liquid_bucket_sector) & (metadata['Country'] == liquid_bucket_country) & (metadata['AverageRating'] == liquid_bucket_ratings)].index.to_list()
         liquid_bucket_spread = prices_data[liquid_bucket_tickers].mean(axis=0)
         global_spread = liquid_bucket_spread
-
-    all_tickers = prices_data.columns.to_list()
 
     # prepare the data for the community
 
@@ -114,9 +115,9 @@ def calculate_proxy_coeff_csra_community_extra_coeff(prices_data, communities, m
     prices_data_log = np.log(prices_data)
 
     if len(communities) > 1:
-        mask = np.zeros((prices_data[0], len(sectors) + len(countries) + len(ratings) + len(communities)))
+        mask = np.zeros((prices_data.shape[0], len(sectors) + len(countries) + len(ratings) + len(communities)))
     else:
-        mask = np.zeros((prices_data[0], len(sectors) + len(countries) + len(ratings)))
+        mask = np.zeros((prices_data.shape[0], len(sectors) + len(countries) + len(ratings)))
 
     for i in range(prices_data.shape[0]):
         if not use_index:
@@ -138,9 +139,16 @@ def calculate_proxy_coeff_csra_community_extra_coeff(prices_data, communities, m
         else:    
             j = sectors.index(metadata.loc[all_tickers[i], 'Sector'])
             mask[i, j] = 1
-            k = len(sectors) + countries.index(metadata.loc[all_tickers[i], 'Country'])
-            mask[i, k] = 1
-            l = len(sectors) + len(countries) + ratings.index(metadata.loc[all_tickers[i], 'AverageRating'])
+            j = len(sectors) + countries.index(metadata.loc[all_tickers[i], 'Country'])
+            mask[i, j] = 1
+            j = len(sectors) + len(countries) + ratings.index(metadata.loc[all_tickers[i], 'AverageRating'])
+            mask[i, j] = 1
+            if len(communities) > 1:
+                for community_number, community in enumerate(communities):
+                    if all_tickers[i] in community:
+                        j = len(sectors) + len(countries) + len(ratings) + community_number
+                        mask[i, j] = 1
+
 
     # beta_0
     beta_0 = np.tile(np.log(global_spread), (prices_data.shape[1], 1))
@@ -168,7 +176,11 @@ def calculate_proxy_coeff_csra_community_extra_coeff(prices_data, communities, m
     # store the coefficients
     sector_betas = betas.value[0:len(sectors)]
     country_betas = betas.value[len(sectors): len(sectors) + len(countries)]
-    rating_betas = betas.value[len(sectors) + len(countries):]
+    if len(communities) > 1:
+        rating_betas = betas.value[len(sectors) + len(countries): len(sectors) + len(countries) + len(ratings)]
+    else:
+        rating_betas = betas.value[len(sectors) + len(countries):]
+
     if len(communities) > 1:
         community_betas = betas.value[len(sectors) + len(countries) + len(ratings):]
         community_df = pd.DataFrame({'Name': [f'Community_{i+1}' for i in range(len(communities))], 'Coefficient': community_betas.flatten(), 'Type': 'Community'})
@@ -182,6 +194,8 @@ def calculate_proxy_coeff_csra_community_extra_coeff(prices_data, communities, m
         coefficients_df = pd.concat([sectors_df, countries_df, ratings_df, community_df], ignore_index=True)
     else:
         coefficients_df = pd.concat([sectors_df, countries_df, ratings_df], ignore_index=True)
+
+    coefficients_df = coefficients_df.set_index('Name')
 
     return coefficients_df
 
